@@ -1,0 +1,24 @@
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-bottom: 90px;
+}
+
+.loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+.SectionBrand{
+  padding-bottom: 70px;
+}
+
+@media (max-width: 1024px) {
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+

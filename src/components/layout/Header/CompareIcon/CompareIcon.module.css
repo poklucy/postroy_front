@@ -1,0 +1,42 @@
+.compareIcon{
+  position: relative;
+}
+
+.compareIcon:hover svg circle{
+  stroke: var(--brand);
+}
+
+.badge {
+  position: absolute;
+  top: 0px;
+  right: -16px;
+  background: var(--brand);
+  color: white;
+  font-size: 11px;
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 0.3s ease;
+}
+
+.withBadge {
+  margin-right: 14px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

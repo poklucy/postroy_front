@@ -1,0 +1,144 @@
+.pagePerson{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+
+.accordionSection{
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+}
+
+.accentBreadcrumbs {
+    z-index: 2;
+    padding: 5px 18px;
+    border: 1px solid var(--grey);
+    border-radius: 25px;
+    width: auto;
+    min-width: max-content;
+    height: 100%;
+    margin-top: 30px;
+    background-color: #FFFFFF10;
+}
+
+.conditionsContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.conditionsInfo{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+    max-width: 50%;
+}
+
+.listContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.list{
+    p{
+        padding-bottom: 20px;
+    }
+    list-style-type: disc;
+    li{
+        margin-left: 20px;
+    }
+}
+
+.modalContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 35px 30px;
+    color: var(--white);
+    background-color: var(--grey);
+    border-radius: 10px;
+    width: 50%;
+    h3{
+        text-transform: uppercase;
+    }
+    .accentBreadcrumbs{
+        margin-top: 0;
+        height: auto;
+        background-color: #FFFFFF10;
+        width: max-content;
+    }
+}
+
+.modalContainerMain{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:30px;
+    position: relative;
+    p{
+        padding-left: 35px;
+        max-width: 55%;
+    }
+    .decor{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+}
+
+.headerPerson{
+    position: relative;
+    color: var(--white);
+    height: 319px;
+}
+
+.background{
+    background-color: var(--brand);
+    position: absolute;
+    height: 100%;
+    width: 200%;
+    left: -50%;
+    z-index: 0;
+}
+
+.headerContainer{
+    position: relative;
+    z-index: 1;
+    padding: 50px 0;
+    h1{
+        margin-bottom: 20px;
+    }
+    p{
+        margin-bottom: 30px;
+    }
+    svg{
+        position: absolute;
+        top:50px;
+        right: 0;
+    }
+}
+
+.button {
+    width: 251px;
+}
+
+.accent{
+    width: max-content;
+    background-color: var(--green);
+    padding: 5px 20px;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: filter 0.2s, transform 0.1s;
+    margin-bottom: 17px;
+    clip-path: polygon(
+            15px 0,
+            100% 0,
+            100% calc(100% - 15px),
+            calc(100% - 15px) 100%,
+            0 100%,
+            0 15px
+    );
+}

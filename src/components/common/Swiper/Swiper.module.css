@@ -1,0 +1,87 @@
+.swiperWrapper {
+  position: relative;
+  width: 100%;
+}
+
+
+.slide {
+  height: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.customPrev,
+.customNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #A4AFB710;
+  backdrop-filter: blur(14px);
+  border-radius: 50%;
+  border: 1px solid var(--grey);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.customPrev {
+  left: -24px;
+}
+
+.customNext {
+  right: -24px;
+}
+
+.customPrev:hover,
+.customNext:hover {
+  background: #FFFFFF60;
+  color: white;
+}
+
+.customPrev:active,
+.customNext:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  display: none !important;
+}
+
+:global(.swiper-pagination-bullet) {
+  background: #ced4da;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: #ff6b00;
+  width: 24px;
+  border-radius: 4px;
+}
+
+:global(.swiper-pagination) {
+  bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .customPrev,
+  .customNext {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .customPrev {
+    left: 0;
+  }
+
+  .customNext {
+    right: 0;
+  }
+}

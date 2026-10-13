@@ -1,0 +1,68 @@
+:root {
+    --black: #000000;
+    --grey: #A4AFB7;
+    --light-grey: #A4AFB730;
+    --white: #FFFFFF;
+    --brand: #FF6900;
+    --brand-hover: #E35F03;
+    --yellow: #FFDD00;
+    --green: #1BB21B;
+
+    --h1-fz: 3.333vw;
+    --h1-lh: 120%;
+
+    --h2-fz: 2.639vw;
+    --h2-lh: 120%;
+
+    --h3-fz: 1.111vw;
+    --h3-lh: 120%;
+
+    --text-fz: 0.972vw;
+    --text-lh: 140%;
+
+    --bold-fz: 0.972vw;
+    --bold-lh:  140%;
+
+    --small-fz: 0.833vw;
+    --small-lh:  140%;
+
+    --sku-fz: 0.833vw;
+    --sku-lh:  130%;
+
+    --btn-fz: 0.903vw;
+    --btn-lh: 150%;
+
+    --price-fz: 1.389vw;
+    --price-lh:  150%;
+
+    --pd1: 16px;
+    --pd2: 20px;
+    --pd3: 30px;
+    --pd4: 40px;
+    --pd5: 50px;
+    --pd6: 90px;
+
+    --border-radius: 120px;
+}
+
+@media (max-width: 840px) {
+    :root {
+        --h1-fz: 5.455vw;
+
+        --h2-fz: 4.091vw;
+
+        --h3-fz: 3.182vw;
+
+        --text-fz: 3.182vw;
+
+        --bold-fz: 3.182vw;
+
+        --small-fz: 2.727vw;
+
+        --sku-fz: 2.727vw;
+
+        --btn-fz: 2.955vw;
+
+        --price-fz: 4.091vw;
+    }
+}

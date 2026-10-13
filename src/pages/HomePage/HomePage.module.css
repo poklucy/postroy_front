@@ -1,0 +1,133 @@
+.pageContainer {
+  gap: 90px !important;
+}
+
+.sectionRecommend {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+
+.backgroundRecommend {
+  background: linear-gradient(to left,
+  #D4F0D4 0%,
+  #D6ED9F 30%,
+  #FFDD80 55%,
+  #FFD093 75%,
+  #FF964C 100%
+  );
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  z-index: 0;
+  height: 100%;
+}
+
+.containerRecommend {
+  background-color: var(--white);
+  z-index: 1;
+  padding: 30px;
+  border-radius: 30px;
+}
+
+.recommendedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  background-color: var(--white);
+}
+
+.linkCatalog {
+  z-index: 2;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  gap:5px;
+  text-decoration: underline;
+}
+
+.linkCatalog:hover svg path{
+  fill: var(--brand);
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: max-content;
+}
+
+.sectionAbout {
+  display: flex;
+  flex-direction: row;
+  gap: 90px;
+}
+
+.sectionAbout .textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pd3);
+  width: 50%;
+  position: relative;
+  border-radius: 30px;
+  align-items: start;
+  text-align: start;
+}
+
+.sectionAbout .textContainer a {
+  text-decoration: underline;
+  z-index: 2;
+}
+
+.sectionAbout .backTextContainer {
+  padding: 21px 60px 28px;
+  color: var(--white);
+}
+
+.sectionAbout .accentBreadcrumbs {
+  z-index: 2;
+  padding: 5px 18px;
+  border: 1px solid var(--grey);
+  border-radius: 25px;
+  width: max-content;
+  background-color: #FFFFFF10;
+}
+
+.sectionAbout .backTextContainer a:hover {
+  color: var(--black);
+}
+
+.sectionAbout .textMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pd2);
+  max-width: 95%;
+  z-index: 2;
+}
+
+.sectionAbout .textMain ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pd1);
+}
+
+.sectionAbout .textMain li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.sectionAbout .back {
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+}

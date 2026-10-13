@@ -1,0 +1,10 @@
+.backLink {
+    gap: 8px;
+    width: fit-content;
+    font-size: var(--small-fz);
+    line-height: var(--small-lh);
+}
+
+.backLink span {
+    text-decoration: underline;
+}

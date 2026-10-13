@@ -1,0 +1,60 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+.error {
+  padding: 10px 14px;
+  background: #fff0f0;
+  color: #dc3545;
+  font-size: 14px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.demo {
+  padding: 10px 14px;
+  background: #fff8e0;
+  font-size: 14px;
+}
+
+button.backBtn {
+  width: fit-content;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--black);
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+button.backBtn:hover:not(:disabled) {
+  color: var(--brand);
+}
+
+button.backBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--grey);
+}

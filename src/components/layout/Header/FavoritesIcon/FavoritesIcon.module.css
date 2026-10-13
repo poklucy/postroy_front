@@ -1,0 +1,37 @@
+.favoritesIcon {
+  position: relative;
+  transition: margin-right 0.2s ease;
+}
+
+.favoritesIcon:hover svg path {
+  stroke: var(--brand);
+}
+
+.withBadge {
+  margin-right: 18px;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: -17px;
+  background: var(--brand);
+  color: white;
+  font-size: 11px;
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.5); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}

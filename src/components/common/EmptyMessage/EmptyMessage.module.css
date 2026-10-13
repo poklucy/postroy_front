@@ -1,0 +1,13 @@
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    background: var(--light-grey);
+}
+
+.link {
+    text-decoration: underline;
+}

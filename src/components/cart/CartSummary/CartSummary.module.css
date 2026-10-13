@@ -1,0 +1,90 @@
+.summary {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 20px;
+    background-color: var(--light-grey);
+}
+
+.topBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.value {
+    font-size: var(--h3-fz);
+    line-height: var(--h3-lh);
+}
+
+.bottomBlock {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--grey);
+    margin-bottom: 12px;
+}
+
+.totalRow > span:first-child {
+    font-weight: 600;
+}
+
+.totalPrice {
+    font-size: var(--price-fz);
+    line-height: var(--price-lh);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.note {
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    align-items: center;
+}
+
+.bonus {
+    color: var(--green);
+}
+
+.continueLink {
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+    text-decoration: underline;
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    width: 100%;
+}
+
+.continueLink:hover {
+    color: #ff6900;
+}
+
+.continueLink:hover svg path{
+    fill: var(--brand);
+}
+
+
+@media (max-width: 992px) {
+    .summary {
+        position: static;
+    }
+}

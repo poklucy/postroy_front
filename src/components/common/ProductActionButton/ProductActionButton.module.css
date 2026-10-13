@@ -1,0 +1,79 @@
+button.button {
+    padding: 0;
+    gap: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--black);
+    font-family: inherit;
+    transition: color 0.2s;
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+button.button:hover,
+button.active {
+    color: var(--brand);
+}
+
+button.button:hover .icon {
+    transform: scale(1.1);
+}
+
+button.button:active .icon {
+    transform: scale(0.9);
+}
+
+.small .icon {
+    width: 28px;
+    height: 28px;
+}
+
+.small svg {
+    width: 16px;
+    height: 16px;
+}
+
+.medium .icon {
+    width: 36px;
+    height: 36px;
+}
+
+.medium svg {
+    width: 22px;
+    height: 22px;
+}
+
+.large .icon {
+    width: 44px;
+    height: 44px;
+}
+
+.large svg {
+    width: 28px;
+    height: 28px;
+}
+
+.withLabel .icon {
+    width: auto;
+    height: auto;
+}
+
+.label {
+    font-size: var(--btn-fz);
+    line-height: var(--btn-lh);
+    white-space: nowrap;
+}
+
+button.active .label {
+    color: var(--black);
+}
+
+button.active:hover .label {
+    color: var(--brand);
+}

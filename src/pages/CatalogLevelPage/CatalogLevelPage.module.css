@@ -1,0 +1,25 @@
+.loading,
+.notFound {
+    padding: 60px 20px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.catalog{
+    display: flex;
+    flex-direction: row;
+    gap:40px;
+}
+
+.catalogContainer{
+    display: flex;
+    flex-direction: column;
+    gap:33px;
+}

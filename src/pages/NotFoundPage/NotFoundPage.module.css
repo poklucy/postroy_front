@@ -1,0 +1,18 @@
+.notFound {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.code {
+  font-size: 120px;
+  color: #ff6b00;
+}
+
+.title {
+  font-size: 32px;
+  margin: 16px 0;
+}
+
+.button {
+  margin-top: 24px;
+}

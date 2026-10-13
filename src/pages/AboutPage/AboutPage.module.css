@@ -1,0 +1,229 @@
+.pageAbout{
+    display: flex;
+    flex-direction: column;
+    gap:90px;
+    padding-bottom: 90px;
+}
+
+.mainAbout{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+    .textAbout{
+        display: flex;
+        flex-direction: row;
+    }
+    .textContainer{
+        display: flex;
+        flex-direction: row;
+        gap:50px;
+        max-width: 50%;
+    }
+    .textContainerMain{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        text-align: start;
+        max-width: 40%;
+    }
+    .advantagesGrid{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 50px;
+        row-gap: 20px;
+        .advantagesItem{
+            display: flex;
+            flex-direction: column;
+            gap:5px;
+        }
+        h2{
+            color: var(--brand);
+        }
+    }
+}
+
+.itemDifference {
+    padding: 21px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 30px;
+    border: 1px solid var(--grey);
+    align-items: center;
+    justify-content: end;
+}
+
+.gridDifferenceSmaller{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    .itemDifference{
+        position: relative;
+        height: 340px;
+        overflow: hidden;
+        padding: 10px;
+    }
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    width: max-content;
+}
+
+.imageShopContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.imageShop{
+    object-fit: cover;
+    width: 100%;
+    height: 237px;
+}
+
+.categoryGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.categoryCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    text-decoration: none;
+    color: inherit;
+    background: var(--light-grey);
+    border-radius: 10px;
+    padding: 20px 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: normal;
+    width: 100%;
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+}
+
+.categoryCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.categoryImage {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+}
+
+.categoryImage img {
+    width: 100%;
+    object-fit: cover;
+    height: 130px;
+}
+
+.sectionAbout {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.sectionAbout .textContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pd3);
+    width: 50%;
+    position: relative;
+    border-radius: 30px;
+    align-items: start;
+    text-align: start;
+}
+
+.sectionAbout .textContainer a {
+    text-decoration: underline;
+    z-index: 2;
+}
+
+.sectionAbout .backTextContainer {
+    padding:26px 21px;
+    color: var(--white);
+}
+
+.sectionAbout .accentBreadcrumbs {
+    z-index: 2;
+    padding: 5px 18px;
+    border: 1px solid var(--grey);
+    border-radius: 25px;
+    width: max-content;
+}
+
+.sectionAbout .backTextContainer a:hover {
+    color: var(--black);
+}
+
+.sectionAbout .textMain {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pd2);
+    max-width: 95%;
+    z-index: 2;
+    h3{
+        text-transform: uppercase;
+    }
+}
+
+.sectionAbout .textMain ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pd1);
+}
+
+.sectionAbout .textMain li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.sectionAbout .back {
+    position: absolute;
+    z-index: 1;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+}
+
+.backGreyTextContainer{
+    background-color: var(--light-grey);
+    padding: 26px 21px;
+    .textMain{
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.listInfo{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    li{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--grey);
+        padding-bottom: 10px;
+        span{
+            font-weight: bold;
+        }
+    }
+}

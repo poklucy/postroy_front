@@ -1,0 +1,49 @@
+.emptyPage{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 90px;
+}
+
+.empty {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--light-grey);
+    border-radius: 20px;
+}
+
+.emptyContent {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.emptyIcon {
+    margin-bottom: 20px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emptyIcon svg {
+    width: 90px;
+    height: 90px;
+}
+
+.emptyTitle {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    justify-content: center;
+    gap: 5px;
+}
+
+.emptyDescription {
+    padding-bottom: 17px;
+}
+
+.emptyButton {
+    width: 250px;
+}

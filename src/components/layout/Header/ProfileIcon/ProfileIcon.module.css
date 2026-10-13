@@ -1,0 +1,12 @@
+.profileIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a4a4a;
+  transition: color 0.2s;
+  padding: 4px;
+}
+
+.profileIcon:hover svg path{
+  fill: var(--brand);
+}

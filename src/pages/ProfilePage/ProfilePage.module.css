@@ -1,0 +1,255 @@
+.profilePage {
+    gap: 30px;
+}
+
+.profileInfo{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.userColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 20px;
+    border-radius: 20px;
+    background: var(--light-grey);
+    font-size: 14px;
+    height: 100%;
+}
+
+.cardCentered {
+    justify-content: center;
+    min-height: 100%;
+}
+
+.userNumber {
+    font-size: 13px;
+}
+
+.userRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.userName {
+    font-size: var(--h3-fz);
+    line-height: var(--h3-lh);
+    font-weight: 600;
+}
+
+.editButton,
+.hintButton {
+    padding: 0;
+    gap: 6px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.editButton span,
+.hintButton span {
+    text-decoration: underline;
+}
+
+.editButton:hover,
+.hintButton:hover {
+    color: var(--brand);
+}
+
+.hintButton {
+    width: fit-content;
+    font-size: 12px;
+}
+
+.divider {
+    height: 2px;
+    background: var(--light-grey);
+}
+
+.statLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--grey);
+}
+
+.bonusValue {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--white);
+    color: var(--green);
+    font-size: var(--h3-fz);
+    font-weight: 600;
+}
+
+.bonusValue svg {
+    color: var(--black);
+}
+
+.discountValue {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--yellow);
+    color: var(--black);
+    font-weight: 600;
+}
+
+.bonusInfo {
+    font-size: 13px;
+    color: #4a4a4a;
+}
+
+.logoutButton {
+    max-width: 333px;
+}
+
+.cardTitle {
+    font-weight: 600;
+}
+
+.linkList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cardLink {
+    gap: 10px;
+    width: fit-content;
+}
+
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 860px;
+    padding: 20px;
+    border-radius: 20px;
+    background: var(--light-grey);
+}
+
+.editTitle {
+    font-size: var(--h3-fz);
+    line-height: var(--h3-lh);
+    font-weight: 600;
+}
+
+.editGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.editField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--grey);
+}
+
+.addresses {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.addressesTitle {
+    font-weight: 600;
+}
+
+.muted {
+    color: var(--grey);
+    font-size: 14px;
+}
+
+.addressList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.addressItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--white);
+}
+
+.newAddress {
+    display: flex;
+    gap: 10px;
+}
+
+.textButton {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.textButton:hover {
+    color: var(--brand);
+}
+
+.editActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .editGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .newAddress {
+        flex-direction: column;
+    }
+}
+
+.cardLink svg {
+    width: 20px;
+    height: 20px;
+}

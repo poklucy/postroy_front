@@ -1,0 +1,49 @@
+.sectionMain {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+}
+
+.sectionHeader {
+    display: flex;
+    flex-direction: column;
+    padding-left: 280px;
+    gap: 10px;
+    position: relative;
+    align-items: start;
+    z-index: 2;
+    min-height: 50px;
+}
+
+.accentBreadcrumbs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 5px 18px;
+    border: 1px solid var(--grey);
+    border-radius: 25px;
+    width: max-content;
+    z-index: 2;
+    background-color: #FFFFFF10;
+
+}
+
+.link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-decoration: underline;
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+}
+
+.link:hover svg path{
+    fill: var(--brand);
+}
+
+
+.description{
+    max-width: 60%;
+}

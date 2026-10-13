@@ -1,0 +1,79 @@
+.successPage {
+  padding: 60px 0;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.icon {
+  font-size: 80px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #7a7a7a;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.orderInfo {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.orderNumber {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.orderNumber span {
+  font-weight: 600;
+}
+
+.orderTotal {
+  font-size: 18px;
+}
+
+.orderTotal span {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.action {
+  flex: 1;
+}
+
+.info {
+  font-size: 14px;
+  color: #7a7a7a;
+}
+
+.info p {
+  margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+  }
+}

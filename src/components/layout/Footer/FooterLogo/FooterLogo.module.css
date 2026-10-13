@@ -1,0 +1,67 @@
+.logoSection {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.logo {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.socialLinks{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+
+.socialLink{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.socialLink:hover {
+    background: var(--white);
+}
+
+.socialLink:hover svg path {
+    fill: var(--brand);
+    stroke: var(--brand);
+}
+
+.copyright br{
+    display: none;
+}
+
+.footerAddress{
+    display: none;
+}
+
+
+@media (max-width: 840px) {
+    .copyright{
+        position: absolute;
+        bottom: 92px;
+        white-space: pre-line;
+        br{
+            display: block;
+        }
+    }
+    .socialLinks{
+        justify-content: end;
+        margin-top: 16px;
+    }
+    .logoSection{
+        gap:60px;
+    }
+    .footerAddress{
+        display: flex;
+        position: absolute;
+        top: 98px;
+        text-decoration: underline;
+        svg path{
+            fill: var(--white);
+        }
+    }
+}

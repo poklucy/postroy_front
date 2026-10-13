@@ -1,0 +1,146 @@
+.ordersPage {
+    gap: 30px;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    background: var(--light-grey);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab:hover {
+    color: var(--brand);
+}
+
+.tabActive,
+.tabActive:hover {
+    background: var(--brand);
+    color: var(--white);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.order {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 20px;
+    background: var(--light-grey);
+}
+
+.orderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.orderTitle {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.orderNumber {
+    font-size: var(--h3-fz);
+    line-height: var(--h3-lh);
+    font-weight: 600;
+}
+
+.orderDate {
+    color: var(--grey);
+    font-size: 14px;
+}
+
+.status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.statusPending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.statusProgress {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.statusDone {
+    background: #d4edda;
+    color: #155724;
+}
+
+.statusCancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 10px;
+    background: var(--white);
+    font-size: 14px;
+}
+
+.itemImage {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.itemPrice {
+    white-space: nowrap;
+}
+
+.orderFooter {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.delivery {
+    color: #4a4a4a;
+}
+
+.total {
+    font-weight: 600;
+    font-size: var(--h3-fz);
+}

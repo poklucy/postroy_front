@@ -1,0 +1,35 @@
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.link {
+  color: var(--grey);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #ff6b00;
+}
+
+.current {
+  color: var(--black);
+}
+
+.separator {
+  color: var(--grey);
+  margin: 0 4px;
+}

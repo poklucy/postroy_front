@@ -1,0 +1,133 @@
+.button {
+    --cut: 10px;
+    --btn-bg: var(--brand);
+    --btn-fg: var(--white);
+    --btn-border: var(--btn-bg);
+    --btn-bg-hover: var(--brand-hover);
+    --btn-fg-hover: var(--btn-fg);
+    --btn-border-hover: var(--btn-bg-hover);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    border: none;
+    background: var(--btn-border);
+    color: var(--btn-fg);
+    font-family: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    isolation: isolate;
+    clip-path: polygon(
+            var(--cut) 0,
+            100% 0,
+            100% calc(100% - var(--cut)),
+            calc(100% - var(--cut)) 100%,
+            0 100%,
+            0 var(--cut)
+    );
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    background: var(--btn-bg);
+    clip-path: polygon(
+            calc(var(--cut) - 0.5px) 0,
+            100% 0,
+            100% calc(100% - var(--cut) + 0.5px),
+            calc(100% - var(--cut) + 0.5px) 100%,
+            0 100%,
+            0 calc(var(--cut) - 0.5px)
+    );
+    transition: background-color 0.2s;
+}
+
+.button:hover:not(:disabled),
+.button:focus-visible {
+    --btn-bg: var(--btn-bg-hover);
+    --btn-border: var(--btn-border-hover);
+    color: var(--btn-fg-hover);
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.content svg {
+    flex-shrink: 0;
+}
+
+.orange {
+    --btn-bg: var(--brand);
+    --btn-fg: var(--white);
+    --btn-bg-hover: var(--brand-hover);
+}
+
+.yellow {
+    --btn-bg: var(--yellow);
+    --btn-fg: var(--black);
+    --btn-bg-hover: var(--brand);
+    --btn-fg-hover: var(--white);
+}
+
+.outline {
+    --btn-bg: var(--btn-surface, var(--white));
+    --btn-border: var(--black);
+    --btn-fg: var(--black);
+    --btn-bg-hover: var(--black);
+    --btn-border-hover: var(--black);
+    --btn-fg-hover: var(--white);
+}
+
+.outlineLight {
+    --btn-bg: var(--btn-surface, var(--brand));
+    --btn-border: var(--white);
+    --btn-fg: var(--white);
+    --btn-bg-hover: var(--white);
+    --btn-border-hover: var(--white);
+    --btn-fg-hover: var(--black);
+}
+
+.sm {
+    --cut: 7px;
+    min-height: 36px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.md {
+    min-height: 50px;
+    font-size: 14px;
+}
+
+.lg {
+    --cut: 12px;
+    min-height: 56px;
+    font-size: 15px;
+}
+
+.fullWidth {
+    width: 100%;
+}

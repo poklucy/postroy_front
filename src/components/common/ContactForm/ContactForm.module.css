@@ -1,0 +1,16 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.label {
+    color: #00000060;
+}
+
+.success {
+    padding: 16px;
+    background: var(--white);
+    font-weight: 600;
+}

@@ -1,0 +1,392 @@
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.article {
+  color: #00000070;
+  font-size: 12px;
+  line-height: var(--small-lh);
+}
+
+.productLayout {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 40px;
+  margin-bottom: 56px;
+  align-items: flex-start;
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.mainImage {
+  position: relative;
+  flex: 1;
+  border: 1px solid var(--light-grey);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 420px;
+}
+
+.mainImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumbnails {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.thumbnail {
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  border: 1px solid var(--light-grey);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.2s;
+  background-color: var(--white);
+}
+
+.thumbnail:hover { border-color: var(--brand); }
+.thumbnail.active { border-color: var(--brand); }
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tabs {
+  display: flex;
+  gap: 29px;
+  border: 1px solid var(--light-grey);
+  padding: 20px 30px;
+  border-radius: 120px;
+}
+
+.tab {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: var(--h3-fz);
+  line-height: var(--h3-lh);
+  cursor: pointer;
+  padding: 0;
+}
+
+.tab:hover {
+  color: var(--brand);
+}
+
+.tabActive {
+  font-weight: 600;
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: #ea6a12;
+}
+
+.tabBody {
+  display: flex;
+  flex-direction: row;
+}
+
+.mainInfoProduct{
+  display: flex;
+  flex-direction: row;
+  gap:20px;
+}
+
+.description{
+  display: flex;
+  flex-direction: row;
+  gap:30px;
+}
+
+.descriptionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.descriptionText {
+  font-size: var(--btn-fz);
+  line-height: var(--btn-lh);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.optionLabel {
+  font-size: var(--btn-fz);
+  line-height: var(--btn-lh);
+  margin-bottom: 10px;
+}
+
+.optionValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+}
+
+.optionBtn {
+  min-width: 40px;
+  height: 40px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+  font-size: var(--btn-fz);
+  line-height: var(--btn-lh);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.optionBtn:hover { border-color: var(--brand); }
+
+.optionBtnActive {
+  border-color: var(--brand);
+}
+
+.specGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.specRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.specName {
+  color: var(--grey);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.specValue {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.specDots {
+  flex: 1;
+  border-bottom: 1px dotted #cfcfcf;
+  transform: translateY(-3px);
+  min-width: 20px;
+}
+
+.docsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 0;
+}
+
+.docItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: #1a1a1a;
+  font-size: 15px;
+  line-height: 1.4;
+  max-width: 480px;
+  transition: color 0.15s;
+}
+
+.docItem:hover {
+  color: var(--brand, #ea6a12);
+}
+
+.docIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+.docName {
+  text-align: left;
+}
+@media (max-width: 1100px) {
+  .specGrid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.buyCard {
+  border-radius: 4px;
+  border: 1px solid var(--light-grey);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buyPriceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.buyPriceLabel {
+  font-size: var(--small-fz);
+  line-height: var(--small-lh);
+  color: var(--grey);
+}
+
+.buyPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.buyOldPrice {
+  color: var(--grey);
+  font-size: var(--btn-fz);
+  line-height: var(--btn-lh);
+  text-decoration: line-through;
+}
+
+.buyCurrentPrice {
+  font-size: var(--price-fz);
+  line-height: var(--price-lh);
+  font-weight: 600;
+}
+
+.bonusRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bonusValue {
+  color: var(--green);
+}
+
+.bonusHint {
+  width: 14px;
+  height: 18px;
+}
+
+.stockRow {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.stockIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.delivery {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deliveryRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.deliveryIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  svg{
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.deliveryValue {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+.deliveryValue b {
+
+}
+
+.deliveryLine {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.deliveryLine span { }
+
+.loading,
+.notFound {
+  text-align: center;
+  padding: 80px 0;
+  font-size: 18px;
+  color: #7a7a7a;
+}
+
+@media (max-width: 1100px) {
+  .productLayout { grid-template-columns: 1fr; }
+  .buyCard { position: static; }
+  .descriptionGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .title { font-size: 26px; }
+  .gallery { flex-direction: column-reverse; }
+  .thumbnails { flex-direction: row; width: auto; }
+  .buyCurrentPrice { font-size: 22px; }
+}

@@ -1,0 +1,117 @@
+.root {
+    position: relative;
+    display: inline-flex;
+}
+
+.fullWidth {
+    display: flex;
+    width: 100%;
+}
+
+button.trigger {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0 12px;
+    border: 1px solid var(--light-grey);
+    border-radius: 4px;
+    background: #A4AFB712;
+    color: var(--black);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.sm {
+    min-height: 40px;
+    font-size: 13px;
+}
+
+.md {
+    min-height: 56px;
+    font-size: 14px;
+}
+
+button.trigger:hover,
+button.triggerOpen {
+    border-color: var(--grey);
+}
+
+button.triggerError {
+    border-color: #dc3545;
+}
+
+.icon {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.placeholder {
+    color: var(--grey);
+}
+
+.chevron {
+    flex-shrink: 0;
+    margin-left: 6px;
+}
+
+.menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 20;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-height: 320px;
+    overflow-y: auto;
+    animation: menuIn 0.12s ease-out;
+}
+
+@keyframes menuIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu li + li {
+    border-top: 1px solid var(--light-grey);
+}
+
+button.option {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 14px 13px;
+    border: none;
+    background: var(--white);
+    color: var(--black);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+    transition: background-color 0.12s;
+}
+
+button.option:hover,
+button.optionActive {
+    background: #A4AFB720;
+}

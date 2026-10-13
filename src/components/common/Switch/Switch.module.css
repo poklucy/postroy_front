@@ -1,0 +1,62 @@
+.switch {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+}
+
+.switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.track {
+    flex-shrink: 0;
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: #dfe2e5;
+    transition: background-color 0.2s;
+}
+
+.thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+.switch input:checked + .track {
+    background: var(--brand);
+}
+
+.switch input:checked + .track .thumb {
+    transform: translateX(20px);
+}
+
+.switch input:focus-visible + .track {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.disabled .track {
+    opacity: 0.5;
+}
+
+.label {
+    align-self: center;
+}

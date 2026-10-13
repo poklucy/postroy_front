@@ -1,0 +1,60 @@
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+}
+
+.superPrice {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='114' height='23' viewBox='0 0 114 23'%3E%3Cpath d='M114 18L109.059 22.9414H0V5L5 0H114V18Z' fill='%231BB21B'/%3E%3C/svg%3E");
+    color: white;
+    padding: 7px;
+    font-size: var(--small-fz);
+    line-height: var(--small-lh);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: none;
+    min-height: 23px;
+    width: 114px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.new {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='114' height='23' viewBox='0 0 114 23'%3E%3Cpath d='M114 18L109.059 22.9414H0V5L5 0H114V18Z' fill='%23FFDD00'/%3E%3C/svg%3E");    color: white;
+    padding: 7px;
+    font-size: var(--small-fz);
+    line-height: var(--small-lh);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: none;
+    min-height: 23px;
+    width: 114px;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hit {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='114' height='23' viewBox='0 0 114 23'%3E%3Cpath d='M114 18L109.059 22.9414H0V5L5 0H114V18Z' fill='%23FF6900'/%3E%3C/svg%3E");    color: white;
+    padding: 7px;
+    font-size: var(--small-fz);
+    line-height: var(--small-lh);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: none;
+    min-height: 23px;
+    width: 114px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

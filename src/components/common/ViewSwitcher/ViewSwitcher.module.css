@@ -1,0 +1,39 @@
+.switcher {
+    display: flex;
+    gap: 2px;
+}
+
+.button {
+    display: flex;
+    height: 30px;
+    width: 30px;
+    background-color: var(--white);
+    svg{
+        min-width: 20px;
+        min-height: 20px;
+        path, circle{
+            fill: var(--grey);
+        }
+    }
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.button:hover svg path {
+    fill: var(--brand);
+}
+
+.button:hover svg circle{
+    fill: var(--brand);
+}
+
+
+.active svg path {
+    fill: var(--brand);
+}
+
+.active svg circle{
+    fill: var(--brand);
+}
