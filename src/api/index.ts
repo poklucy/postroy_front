@@ -5,3 +5,5 @@ export * from './products.api';
 export * from './auth.api';
 export * from './user.api';
 export * from './orders.api';
+export * from './apiError';
+export * from './http';

@@ -11,6 +11,13 @@ const getSlugs = (product: Product | ProductCard) => {
     };
 };
 
+export const DEFAULT_MAX_QUANTITY = 99;
+
+export const getMaxQuantity = (product: Product | ProductCard) => {
+    const stock = product.stockQuantity;
+    return typeof stock === 'number' && stock > 0 ? stock : DEFAULT_MAX_QUANTITY;
+};
+
 export const toCartItem = (
     product: Product | ProductCard,
     quantity: number = 1
@@ -20,7 +27,8 @@ export const toCartItem = (
     name: product.name,
     price: product.price,
     image: product.mainImage,
-    quantity,
+    quantity: Math.min(quantity, getMaxQuantity(product)),
+    maxQuantity: getMaxQuantity(product),
     inStock: product.inStock,
     slug: product.slug,
     ...getSlugs(product),

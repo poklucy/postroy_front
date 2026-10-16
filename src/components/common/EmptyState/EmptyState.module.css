@@ -47,3 +47,42 @@
 .emptyButton {
     width: 250px;
 }
+
+@media (max-width: 840px) {
+    .emptyPage {
+        gap: 24px;
+        padding-bottom: 40px;
+    }
+
+    .empty {
+        min-height: 0;
+        padding: 30px 16px;
+        border-radius: 12px;
+    }
+
+    .empty :global(.container) {
+        width: 100%;
+    }
+
+    .emptyIcon {
+        margin-bottom: 12px;
+    }
+
+    .emptyIcon svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .emptyTitle,
+    .emptyDescription {
+        font-size: 12px;
+    }
+
+    .emptyDescription {
+        padding-bottom: 14px;
+    }
+
+    .emptyButton {
+        width: 200px;
+    }
+}

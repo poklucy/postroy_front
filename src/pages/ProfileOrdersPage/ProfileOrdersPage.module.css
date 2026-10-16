@@ -2,33 +2,6 @@
     gap: 30px;
 }
 
-.tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.tab {
-    padding: 10px 20px;
-    border: none;
-    border-radius: var(--border-radius);
-    background: var(--light-grey);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 14px;
-    transition: background 0.2s, color 0.2s;
-}
-
-.tab:hover {
-    color: var(--brand);
-}
-
-.tabActive,
-.tabActive:hover {
-    background: var(--brand);
-    color: var(--white);
-}
-
 .list {
     display: flex;
     flex-direction: column;

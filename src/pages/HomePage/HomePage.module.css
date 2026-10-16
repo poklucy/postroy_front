@@ -131,3 +131,97 @@
   width: 100%;
   border-radius: 25px;
 }
+
+@media (max-width: 1024px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: none;
+  }
+}
+
+@media (max-width: 840px) {
+  .pageContainer {
+    gap: 40px !important;
+  }
+
+  .sectionRecommend {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .containerRecommend {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .recommendedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 10px;
+  }
+
+  .linkCatalog {
+    font-size: 13px;
+  }
+
+  .sectionAbout {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .sectionAbout .textContainer {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .sectionAbout .backTextContainer {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .sectionAbout .back {
+    border-radius: 20px;
+  }
+
+  .sectionAbout .accentBreadcrumbs {
+    padding: 4px 14px;
+    font-size: 12px;
+  }
+
+  .sectionAbout .textMain {
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .sectionAbout .textMain h2 {
+    font-size: 16px;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .sectionAbout .textMain h2 br {
+    display: none;
+  }
+
+  .sectionAbout .textMain p {
+    font-size: 13px;
+  }
+
+  .sectionAbout .textMain ul {
+    gap: 10px;
+  }
+
+  .sectionAbout .textMain li {
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .sectionAbout .textMain li svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .sectionAbout .textContainer a {
+    font-size: 13px;
+  }
+}

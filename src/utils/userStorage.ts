@@ -27,8 +27,8 @@ const read = <T>(storage: Storage, key: string, fallback: T): T => {
 const write = (storage: Storage, key: string, value: unknown) => {
   try {
     storage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error(`Не удалось сохранить ${key}`, error);
+  } catch {
+    /* storage unavailable or full — data stays in memory for this session */
   }
 };
 

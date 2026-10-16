@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import { formatPrice } from '@/utils';
+import { FEATURES } from '@/config/features.config';
 import styles from './CartSummary.module.css';
 
 interface CartSummaryProps {
@@ -41,7 +42,9 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                         <span className={styles.totalPrice}>{formatPrice(totalPrice)}</span>
                     </div>
 
-                    <p className={styles.note}>Промокод и бонусы - на следующем шаге</p>
+                    <p className={styles.note}>
+                        {FEATURES.loyalty ? 'Промокод и бонусы - на следующем шаге' : 'Промокод - на следующем шаге'}
+                    </p>
 
                     {bonusPoints !== undefined && (
                         <p className={styles.note}>

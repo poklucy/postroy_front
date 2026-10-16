@@ -6,7 +6,12 @@ import {
     selectIsInCompare,
     toggleCompare,
 } from '@/store/slices/compare';
+import { showToast } from '@/store/slices/notifications';
+import { ROUTES } from '@/config/routes.config';
+import { STATUS_MESSAGES } from '@/config/statusMessages';
 import { ProductCard } from '@/types/product.types';
+
+const compareLink = { to: ROUTES.COMPARE, label: STATUS_MESSAGES.compare.link };
 
 export const useCompareToggle = (product: ProductCard) => {
     const dispatch = useAppDispatch();
@@ -15,10 +20,13 @@ export const useCompareToggle = (product: ProductCard) => {
 
     const toggle = useCallback(() => {
         if (!isInCompare && maxReached) {
-            alert(`Максимум ${MAX_COMPARE_ITEMS} товара для сравнения`);
+            dispatch(showToast({ message: STATUS_MESSAGES.compare.limit(MAX_COMPARE_ITEMS), tone: 'warning', link: compareLink }));
             return;
         }
         dispatch(toggleCompare(product));
+        if (!isInCompare) {
+            dispatch(showToast({ message: STATUS_MESSAGES.compare.added, link: compareLink }));
+        }
     }, [dispatch, product, isInCompare, maxReached]);
 
     return { isInCompare, toggle };

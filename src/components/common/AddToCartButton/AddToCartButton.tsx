@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from '@/components/common/Button';
+import { BagIcon } from '@/components/common/icons';
 import { QuantityControls } from '@/components/common/QuantityControls';
 import styles from './AddToCartButton.module.css';
 
@@ -7,10 +9,7 @@ interface AddToCartButtonProps {
     isInCart: boolean;
     quantity: number;
     onAddToCart: () => void;
-    onIncrement: () => void;
-    onDecrement: () => void;
     onQuantityChange: (value: number) => void;
-    minQuantity: number;
     maxQuantity: number;
     showGoToCart?: boolean;
 }
@@ -20,10 +19,7 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
                                                                     isInCart,
                                                                     quantity,
                                                                     onAddToCart,
-                                                                    onIncrement,
-                                                                    onDecrement,
                                                                     onQuantityChange,
-                                                                    minQuantity,
                                                                     maxQuantity,
                                                                     showGoToCart = true,
                                                                 }) => {
@@ -35,30 +31,21 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         );
     }
 
-    if (isInCart) {
+    if (!isInCart) {
         return (
-            <QuantityControls
-                value={quantity}
-                min={minQuantity}
-                max={maxQuantity}
-                onChange={(next) => {
-                    if (next > quantity) onIncrement();
-                    else if (next < quantity) onDecrement();
-                    onQuantityChange(next);
-                }}
-                showGoToCart={showGoToCart}
-            />
+            <Button onClick={onAddToCart} icon={<BagIcon />} fullWidth>
+                В корзину
+            </Button>
         );
     }
 
     return (
         <QuantityControls
-            value={0}
-            min={minQuantity}
+            value={quantity}
+            min={0}
             max={maxQuantity}
             onChange={onQuantityChange}
-            withAddButton
-            onAddToCart={onAddToCart}
+            showGoToCart={showGoToCart}
         />
     );
 };

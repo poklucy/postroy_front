@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PromoCode } from '@/api/mockData/checkout';
 import { Button } from '@/components/common/Button';
-import { Checkbox } from '@/components/common/Checkbox';
 import { Input } from '@/components/common/Input';
 import { Switch } from '@/components/common/Switch';
 import { QuestionIcon } from '@/components/common/icons';
 import { formatPrice } from '@/utils';
 import { CheckoutTotals } from '../checkout.utils';
+import { FEATURES } from '@/config/features.config';
 import styles from '../CheckoutPage.module.css';
 
 interface CheckoutSummaryProps {
@@ -20,12 +19,7 @@ interface CheckoutSummaryProps {
     bonusAvailable: number;
     useBonus: boolean;
     onUseBonusChange: (value: boolean) => void;
-    consent: boolean;
-    onConsentChange: (value: boolean) => void;
-    consentError?: string;
-    formError: string;
-    isSubmitting: boolean;
-    onSubmit: () => void;
+    actions?: React.ReactNode;
 }
 
 export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
@@ -38,12 +32,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
                                                                     bonusAvailable,
                                                                     useBonus,
                                                                     onUseBonusChange,
-                                                                    consent,
-                                                                    onConsentChange,
-                                                                    consentError,
-                                                                    formError,
-                                                                    isSubmitting,
-                                                                    onSubmit,
+                                                                    actions,
                                                                 }) => {
     const [promoInput, setPromoInput] = useState(promo?.code ?? '');
 
@@ -108,6 +97,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
                 {promoError && <span className={styles.errorText}>{promoError}</span>}
             </form>
 
+            {FEATURES.loyalty && (
             <div className={styles.bonusToggle}>
                 <Switch checked={useBonus} disabled={bonusAvailable === 0} onChange={onUseBonusChange}>
                     Оплатить бонусными баллами
@@ -119,36 +109,24 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
                     <QuestionIcon size={20} />
                 </span>
             </div>
+            )}
 
             <div className={styles.summaryTotal}>
                 <div className={styles.summaryTotalRow}>
                     <span>Итого к оплате:</span>
                     <span className={styles.summaryTotalPrice}>{formatPrice(totals.totalPrice)}</span>
                 </div>
+                {FEATURES.loyalty && (
                 <div className={styles.summaryBonus}>
                     Начислим баллы: <span className={styles.bonusValue}>+{totals.bonusEarned}</span>
                     <span className={styles.hintIconSmall} title="Начисляем 1% от оплаченной суммы товаров">
                         <QuestionIcon />
                     </span>
                 </div>
+                )}
             </div>
 
-            <div className={styles.consent}>
-                <Checkbox
-                    checked={consent}
-                    onChange={onConsentChange}
-                    label="Согласие на сбор и обработку персональных данных на условиях"
-                    className={styles.consentCheckbox}
-                />
-                <Link to="/about" className={styles.consentLink}>Политики обработки персональных данных</Link>
-                {consentError && <span className={styles.errorText}>{consentError}</span>}
-            </div>
-
-            {formError && <p className={styles.formError}>{formError}</p>}
-
-            <Button variant="orange" size="md" fullWidth onClick={onSubmit} disabled={isSubmitting}>
-                {isSubmitting ? 'Оформляем заказ...' : 'Перейти к оплате'}
-            </Button>
+            {actions}
         </aside>
     );
 };

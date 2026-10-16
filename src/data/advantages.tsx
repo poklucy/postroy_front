@@ -1,3 +1,4 @@
+import { FEATURES } from '@/config/features.config';
 import { Advantage } from '@/components/common/AdvantagesGrid';
 
 export const STORE_ADVANTAGES: Advantage[] = [
@@ -125,7 +126,7 @@ export const STORE_ADVANTAGES: Advantage[] = [
                     fill="white"/>
             </svg>
         ),
-        title: 'Система скидок и бонусов',
+        title: FEATURES.loyalty ? 'Система скидок и бонусов' : 'Система скидок',
         text: 'Выгодные предложения',
     },
 ];

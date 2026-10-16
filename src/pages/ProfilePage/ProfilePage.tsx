@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logout, selectUserProfile } from '@/store/slices/auth';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { Button } from '@/components/common/Button';
-import { CompareIcon, HeartIcon, QuestionIcon } from '@/components/common/icons';
+import { ChevronIcon, CompareIcon, HeartIcon, QuestionIcon } from '@/components/common/icons';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { ROUTES } from '@/config/routes.config';
 import { BONUS_ACCRUAL_RATE } from '@/api/mockData/checkout';
 import { formatPhone } from '@/utils/phone';
 import { ProfileEditForm } from './components/ProfileEditForm';
 import { BoxIcon, CartIcon, ClockIcon, CoinIcon, EditIcon, ReturnIcon } from './components/ProfileIcons';
+import { FEATURES } from '@/config/features.config';
 import styles from './ProfilePage.module.css';
 
 interface ProfileLink {
@@ -57,8 +59,29 @@ export const ProfilePage: React.FC = () => {
     const profile = useAppSelector(selectUserProfile);
     const [isEditing, setIsEditing] = useState(false);
     const [showBonusInfo, setShowBonusInfo] = useState(false);
+    const isMobile = useMediaQuery('(max-width: 840px)');
+
+    useEffect(() => {
+        if (isEditing && isMobile) window.scrollTo(0, 0);
+    }, [isEditing, isMobile]);
 
     if (!profile) return null;
+
+    if (isEditing && isMobile) {
+        return (
+            <div className={`page ${styles.profilePage}`}>
+                <Breadcrumbs/>
+                <div className={styles.editHeader}>
+                    <h1>Редактировать профиль</h1>
+                    <button type="button" className={styles.backButton} onClick={() => setIsEditing(false)}>
+                        <ChevronIcon direction="left" />
+                        <span>Вернуться в профиль</span>
+                    </button>
+                </div>
+                <ProfileEditForm profile={profile} onClose={() => setIsEditing(false)} />
+            </div>
+        );
+    }
 
     const handleLogout = () => {
         navigate(ROUTES.HOME);
@@ -86,9 +109,10 @@ export const ProfilePage: React.FC = () => {
                                 </button>
                             </div>
 
-                            <div className={styles.divider}/>
+                            {/*<div className={styles.divider}/>*/}
 
                             <div className={styles.userRow}>
+                            {FEATURES.loyalty && (
                             <span className={styles.statLabel}>
                                 Бонусы:
                                 <span className={styles.bonusValue}>
@@ -96,18 +120,21 @@ export const ProfilePage: React.FC = () => {
                                     <CoinIcon/>
                                 </span>
                             </span>
-                                <span className={styles.statLabel}>
-                                Размер скидки:
-                                <span className={styles.discountValue}>{profile.discountPercent}%</span>
-                            </span>
+                            )}
+                            {/*    <span className={styles.statLabel}>*/}
+                            {/*    Размер скидки:*/}
+                            {/*    <span className={styles.discountValue}>{profile.discountPercent}%</span>*/}
+                            {/*</span>*/}
                             </div>
 
+                            {FEATURES.loyalty && (
                             <button type="button" className={styles.hintButton}
                                     onClick={() => setShowBonusInfo(prev => !prev)}>
                                 <QuestionIcon/>
                                 <span>Как это работает</span>
                             </button>
-                            {showBonusInfo && (
+                            )}
+                            {FEATURES.loyalty && showBonusInfo && (
                                 <p className={styles.bonusInfo}>
                                     За каждый заказ начисляем {BONUS_ACCRUAL_RATE * 100}% от оплаченной суммы товаров
                                     бонусными баллами. 1 балл = 1 ₽, баллами можно оплатить следующие покупки при

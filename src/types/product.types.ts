@@ -64,6 +64,7 @@ export interface ProductCard {
   oldPrice?: number;
   isSuperPrice?: boolean;
   inStock: boolean;
+  stockQuantity?: number;
   mainImage: string;
   images?: string[];
   rating?: number;

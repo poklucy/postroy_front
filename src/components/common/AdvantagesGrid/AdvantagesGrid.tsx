@@ -10,11 +10,12 @@ export interface Advantage {
 interface AdvantagesGridProps {
     items: Advantage[];
     className?: string;
+    mobileScroll?: boolean;
 }
 
-export const AdvantagesGrid: React.FC<AdvantagesGridProps> = ({ items, className }) => (
+export const AdvantagesGrid: React.FC<AdvantagesGridProps> = ({ items, className, mobileScroll = false }) => (
     <div
-        className={[styles.grid, className].filter(Boolean).join(' ')}
+        className={[styles.grid, mobileScroll ? styles.scroll : '', className].filter(Boolean).join(' ')}
         style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}
     >
         {items.map(item => (

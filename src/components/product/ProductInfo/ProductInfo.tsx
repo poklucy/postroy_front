@@ -30,7 +30,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, productUrl })
                 <div className={styles.priceWrapper}>
                     Цена за штуку
                     <div className={styles.priceContainer}>
-                        {oldPrice && (
+                        {Boolean(oldPrice) && (
                             <span className={styles.oldPrice}>
                                 {formatPrice(oldPrice)}
                             </span>

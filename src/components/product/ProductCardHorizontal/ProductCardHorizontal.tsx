@@ -7,6 +7,7 @@ import { ProductCartButton } from '@/components/product/ProductCartButton';
 import { ProductCard as IProductCard } from '@/types/product.types';
 import { formatPrice } from '@/utils';
 import { getProductUrl } from '@/utils/product';
+import { FEATURES } from '@/config/features.config';
 import styles from './ProductCardHorizontal.module.css';
 
 interface ProductCardHorizontalProps {
@@ -85,7 +86,7 @@ export const ProductCardHorizontal: React.FC<ProductCardHorizontalProps> = ({
             <div className={styles.buyBlock}>
                 <div className={styles.priceLabel}>Цена за штуку</div>
                 <div className={styles.priceRow}>
-                    {product.oldPrice && (
+                    {Boolean(product.oldPrice) && (
                         <span className={styles.oldPrice}>
                             {formatPrice(product.oldPrice)}
                         </span>
@@ -95,7 +96,7 @@ export const ProductCardHorizontal: React.FC<ProductCardHorizontalProps> = ({
 
                 <ProductCartButton product={product} />
 
-                {product.bonusPoints && (
+                {FEATURES.loyalty && Boolean(product.bonusPoints) && (
                     <div className={styles.bonus}>
                         Начислим баллы: <span>+{product.bonusPoints}</span>
                     </div>

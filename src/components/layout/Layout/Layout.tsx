@@ -1,7 +1,11 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import Footer from '@/components/layout/Footer';
+import { NetworkStatus } from '@/components/layout/NetworkStatus';
+import { BottomNav } from '@/components/layout/BottomNav';
+import { Toast } from '@/components/layout/Toast';
+import { CookieBanner } from '@/components/layout/CookieBanner';
 import styles from './Layout.module.css';
 
 export const Layout: React.FC = () => {
@@ -14,6 +18,11 @@ export const Layout: React.FC = () => {
         </div>
       </main>
       <Footer />
+      <BottomNav />
+      <CookieBanner />
+      <Toast />
+      <NetworkStatus />
+      <ScrollRestoration />
     </div>
   );
 };

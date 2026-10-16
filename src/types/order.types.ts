@@ -2,6 +2,8 @@ export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipping' | 
 
 export type DeliveryMethod = 'pickup' | 'courier';
 
+export type PaymentMethod = 'store' | 'card' | 'cash' | 'sbp';
+
 export interface OrderItem {
   productId: string;
   article?: string;
@@ -32,6 +34,7 @@ export interface Order {
   items: OrderItem[];
   contacts: OrderContacts;
   delivery: OrderDelivery;
+  payment?: PaymentMethod;
   itemsTotal: number;
   promoCode?: string;
   promoDiscount: number;

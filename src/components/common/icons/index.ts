@@ -4,3 +4,8 @@ export { BagIcon } from './BagIcon';
 export { ChevronIcon } from './ChevronIcon';
 export { QuestionIcon } from './QuestionIcon';
 export { TrashIcon } from './TrashIcon';
+export { HomeIcon } from './HomeIcon';
+export { CatalogIcon } from './CatalogIcon';
+export { UserIcon } from './UserIcon';
+export { PhoneIcon } from './PhoneIcon';
+export { PinIcon } from './PinIcon';

@@ -16,13 +16,20 @@ import { LoginModal } from '@/components/auth/LoginModal';
 import { BackLink } from '@/components/common/BackLink';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { ROUTES } from '@/config/routes.config';
-import { DeliveryMethod, Order } from '@/types/order.types';
-import { delay, generateId } from '@/utils/helpers';
+import { DeliveryMethod, Order, PaymentMethod } from '@/types/order.types';
+import { AVAILABLE_DELIVERY_METHODS, AVAILABLE_PAYMENT_METHODS } from '@/config/checkout.config';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { generateId } from '@/utils/helpers';
+import { ordersApi } from '@/api/orders.api';
+import { toRequestError } from '@/api/apiError';
+import { STATUS_MESSAGES, getInlineErrorMessage } from '@/config/statusMessages';
 import { formatPhoneInput, normalizePhone } from '@/utils/phone';
 import { OrderItems } from './components/OrderItems';
 import { DeliverySection } from './components/DeliverySection';
 import { ContactsSection } from './components/ContactsSection';
 import { CheckoutSummary } from './components/CheckoutSummary';
+import { CheckoutActions } from './components/CheckoutActions';
+import { PaymentStep } from './components/PaymentStep';
 import {
     calculateTotals,
     CheckoutContacts,
@@ -34,12 +41,15 @@ import styles from './CheckoutPage.module.css';
 export const CheckoutPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const items = useAppSelector(selectCartItems);
+    const cartItems = useAppSelector(selectCartItems);
+    const items = useMemo(() => cartItems.filter(item => item.inStock !== false), [cartItems]);
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
     const profile = useAppSelector(selectUserProfile);
     const orders = useAppSelector(selectUserOrders);
 
-    const [method, setMethod] = useState<DeliveryMethod>('courier');
+    const [step, setStep] = useState<1 | 2>(1);
+    const [method, setMethod] = useState<DeliveryMethod>(AVAILABLE_DELIVERY_METHODS[0].value);
+    const [payment, setPayment] = useState<PaymentMethod>(AVAILABLE_PAYMENT_METHODS[0].value);
     const [addressId, setAddressId] = useState('');
     const [pickupPointId, setPickupPointId] = useState(PICKUP_POINTS[0].id);
     const [services, setServices] = useState<string[]>([]);
@@ -51,13 +61,18 @@ export const CheckoutPage: React.FC = () => {
     const [consent, setConsent] = useState(true);
     const [errors, setErrors] = useState<CheckoutErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
     const isCompleted = useRef(false);
+    const isCompact = useMediaQuery('(max-width: 992px)');
 
     const addresses = useMemo(() => profile?.addresses ?? [], [profile]);
     const bonusAvailable = profile?.bonusPoints ?? 0;
 
+    const contactsPrefilled = useRef(false);
+
     useEffect(() => {
-        if (!profile) return;
+        if (!profile || contactsPrefilled.current) return;
+        contactsPrefilled.current = true;
         setContacts(prev => ({
             firstName: prev.firstName || profile.firstName,
             lastName: prev.lastName || profile.lastName,
@@ -106,9 +121,9 @@ export const CheckoutPage: React.FC = () => {
     const handleApplyPromo = (code: string) => {
         const found = PROMO_CODES.find(p => p.code === code.trim().toUpperCase());
         if (!found) {
-            setPromoError('Промокод не найден');
+            setPromoError(STATUS_MESSAGES.checkout.promoNotFound);
         } else if (found.firstOrderOnly && orders.length > 0) {
-            setPromoError('Промокод действует только на первый заказ');
+            setPromoError(STATUS_MESSAGES.checkout.promoFirstOrderOnly);
         } else {
             setPromo(found);
             setPromoError('');
@@ -120,15 +135,26 @@ export const CheckoutPage: React.FC = () => {
         setErrors(prev => ({ ...prev, consent: undefined }));
     };
 
-    const handleSubmit = async () => {
+    const handleGoToPayment = () => {
         const validationErrors = validateCheckout(contacts, deliveryAddress, consent);
         setErrors(validationErrors);
         if (Object.keys(validationErrors).length > 0) return;
 
-        setIsSubmitting(true);
-        await delay(800);
+        setSubmitError('');
+        setStep(2);
+        window.scrollTo(0, 0);
+    };
 
-        const order: Order = {
+    const handleBackToDetails = () => {
+        setStep(1);
+        window.scrollTo(0, 0);
+    };
+
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        setSubmitError('');
+
+        const draft: Order = {
             id: generateId(),
             orderNumber: String(Date.now()).slice(-8),
             items: items.map(item => ({
@@ -158,9 +184,19 @@ export const CheckoutPage: React.FC = () => {
             bonusSpent: totals.bonusSpent,
             bonusEarned: totals.bonusEarned,
             totalPrice: totals.totalPrice,
+            payment,
             status: 'pending',
             createdAt: new Date().toISOString(),
         };
+
+        let order: Order;
+        try {
+            order = await ordersApi.place(draft);
+        } catch (error) {
+            setSubmitError(getInlineErrorMessage(toRequestError(error), STATUS_MESSAGES.checkout.submitError));
+            setIsSubmitting(false);
+            return;
+        }
 
         isCompleted.current = true;
         dispatch(updateProfile({
@@ -176,14 +212,62 @@ export const CheckoutPage: React.FC = () => {
 
     const hasErrors = Object.values(errors).some(Boolean);
 
+    const header = (
+        <div className={styles.header}>
+            <h1>Оформление заказа</h1>
+            {step === 1 && <BackLink to={ROUTES.CART}>Вернуться в корзину</BackLink>}
+        </div>
+    );
+
+    if (step === 2) {
+        return (
+            <div className={`page ${styles.checkoutPage}`}>
+                <Breadcrumbs />
+                {header}
+                <PaymentStep
+                    value={payment}
+                    onChange={setPayment}
+                    onBack={handleBackToDetails}
+                    onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    error={submitError}
+                />
+            </div>
+        );
+    }
+
+    const actions = (
+        <CheckoutActions
+            className={isCompact ? styles.actionsStandalone : undefined}
+            consent={consent}
+            onConsentChange={handleConsentChange}
+            consentError={errors.consent}
+            formError={hasErrors ? STATUS_MESSAGES.checkout.validation : ''}
+            isSubmitting={false}
+            onSubmit={handleGoToPayment}
+        />
+    );
+
+    const summary = (
+        <CheckoutSummary
+            positionsCount={items.length}
+            totals={totals}
+            promo={promo}
+            promoError={promoError}
+            onApplyPromo={handleApplyPromo}
+            onResetPromo={() => setPromo(null)}
+            bonusAvailable={bonusAvailable}
+            useBonus={useBonus}
+            onUseBonusChange={setUseBonus}
+            actions={isCompact ? undefined : actions}
+        />
+    );
+
     return (
         <div className={`page ${styles.checkoutPage}`}>
             <Breadcrumbs />
 
-            <div className={styles.header}>
-                <h1>Оформление заказа</h1>
-                <BackLink to={ROUTES.CART}>Вернуться в корзину</BackLink>
-            </div>
+            {header}
 
             <p className={styles.stepTitle}>Шаг 1 — заполните данные и выберите доставку</p>
 
@@ -208,26 +292,12 @@ export const CheckoutPage: React.FC = () => {
                         onCommentChange={setComment}
                         error={errors.address}
                     />
+                    {isCompact && summary}
                     <ContactsSection contacts={contacts} errors={errors} onChange={handleContactChange} />
+                    {isCompact && actions}
                 </div>
 
-                <CheckoutSummary
-                    positionsCount={items.length}
-                    totals={totals}
-                    promo={promo}
-                    promoError={promoError}
-                    onApplyPromo={handleApplyPromo}
-                    onResetPromo={() => setPromo(null)}
-                    bonusAvailable={bonusAvailable}
-                    useBonus={useBonus}
-                    onUseBonusChange={setUseBonus}
-                    consent={consent}
-                    onConsentChange={handleConsentChange}
-                    consentError={errors.consent}
-                    formError={hasErrors ? 'Проверьте правильность заполнения полей' : ''}
-                    isSubmitting={isSubmitting}
-                    onSubmit={handleSubmit}
-                />
+                {!isCompact && summary}
             </div>
         </div>
     );

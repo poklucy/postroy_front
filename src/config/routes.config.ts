@@ -5,6 +5,7 @@ export const ROUTES = {
   SUBCATEGORY: '/:categorySlug/:subcategorySlug',
   GROUP: '/:categorySlug/:subcategorySlug/:groupSlug',
   PRODUCT: '/:categorySlug/:subcategorySlug/:groupSlug/:productSlug',
+  PRODUCT_SHORT: '/product/:productSlug',
   CART: '/cart',
   FAVORITES: '/favorites',
   COMPARE: '/compare',

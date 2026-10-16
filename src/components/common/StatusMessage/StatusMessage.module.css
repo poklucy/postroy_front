@@ -1,0 +1,86 @@
+.status {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 16px 20px;
+    padding: 30px;
+    border-radius: 20px;
+    background: var(--light-grey);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--brand);
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: center;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.description {
+    color: #4a4a4a;
+    max-width: 640px;
+}
+
+.actions {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.actions > * {
+    min-width: 180px;
+}
+
+.compact {
+    gap: 10px 14px;
+    padding: 16px 20px;
+    border-radius: 12px;
+}
+
+.compact .icon {
+    width: 36px;
+    height: 36px;
+}
+
+.compact .title {
+    font-size: 15px;
+}
+
+.compact .description {
+    font-size: 13px;
+}
+
+.compact .actions > * {
+    min-width: 140px;
+}
+
+@media (max-width: 600px) {
+    .status {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .actions {
+        grid-column: 1;
+    }
+
+    .actions > * {
+        flex: 1;
+    }
+}

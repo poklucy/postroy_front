@@ -3,12 +3,12 @@ import { useAppSelector } from '@/store/hooks';
 import { selectUserOrders } from '@/store/slices/auth';
 import { mapToProductCard } from '@/store/slices/products';
 import { mockProducts } from '@/api/mockData/products';
-import { BackLink } from '@/components/common/BackLink';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { Dropdown } from '@/components/common/Dropdown';
 import { EmptyMessage } from '@/components/common/EmptyMessage';
+import { ProfilePageHeader } from '@/components/profile/ProfilePageHeader';
+import { OrdersTabs } from '@/components/profile/OrdersTabs';
 import { ProductCartButton } from '@/components/product/ProductCartButton';
-import { ROUTES } from '@/config/routes.config';
 import { Order, OrderItem } from '@/types/order.types';
 import { ProductCard } from '@/types/product.types';
 import { formatPrice } from '@/utils';
@@ -99,10 +99,9 @@ export const PurchaseHistoryPage: React.FC = () => {
         <div className={`page ${styles.historyPage}`}>
             <Breadcrumbs />
 
-            <div className={styles.header}>
-                <h1>История покупок</h1>
-                <BackLink to={ROUTES.PROFILE}>Вернуться в профиль</BackLink>
-            </div>
+            <ProfilePageHeader title="История покупок" />
+
+            <OrdersTabs active="history" />
 
             <div className={styles.filters}>
                 <Dropdown options={yearOptions} value={year} onChange={setYear} ariaLabel="Год" className={styles.filter} />

@@ -25,7 +25,7 @@ export const FavoritesPage: React.FC = () => {
 
   const handleAddSelectedToCart = () => {
     favorites
-        .filter((p) => selectedIds.includes(p.id))
+        .filter((p) => p.inStock && selectedIds.includes(p.id))
         .forEach((product) => dispatch(addToCart(toCartItem(product, 1))));
     clearSelection();
   };
@@ -34,6 +34,42 @@ export const FavoritesPage: React.FC = () => {
     dispatch(clearFavorites());
     clearSelection();
   };
+
+  const bulkActions = (
+      <>
+        <button
+            type="button"
+            className={`${styles.toolbarBtn} ${styles.toolbarBtnCart}`}
+            onClick={handleAddSelectedToCart}
+            disabled={selectedIds.length === 0}
+        >
+          <span className={styles.toolbarIcon}>
+            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path
+    d="M5.25 1.75L2.625 5.25V17.5C2.625 17.9641 2.80937 18.4092 3.13756 18.7374C3.46575 19.0656 3.91087 19.25 4.375 19.25H16.625C17.0891 19.25 17.5342 19.0656 17.8624 18.7374C18.1906 18.4092 18.375 17.9641 18.375 17.5V5.25L15.75 1.75H5.25Z"
+    stroke="#A4AFB7" strokeWidth="1.2"/>
+<path d="M2.625 5.25H18.375" stroke="#A4AFB7" strokeWidth="1.2"/>
+<path
+    d="M14 8.75C14 9.67826 13.6313 10.5685 12.9749 11.2249C12.3185 11.8813 11.4283 12.25 10.5 12.25C9.57174 12.25 8.6815 11.8813 8.02513 11.2249C7.36875 10.5685 7 9.67826 7 8.75"
+    stroke="#A4AFB7" strokeWidth="1.2"/>
+</svg>
+
+          </span>
+          Добавить отмеченные в корзину
+        </button>
+
+        <button
+            type="button"
+            className={styles.toolbarBtn}
+            onClick={handleClearAll}
+        >
+          <span className={styles.toolbarIcon}>
+            <TrashIcon />
+</span>
+          Очистить все
+        </button>
+      </>
+  );
 
   if (favorites.length === 0) {
     return (
@@ -73,37 +109,7 @@ export const FavoritesPage: React.FC = () => {
                 size="md"
             />
 
-            <button
-                type="button"
-                className={`${styles.toolbarBtn} ${styles.toolbarBtnCart}`}
-                onClick={handleAddSelectedToCart}
-                disabled={selectedIds.length === 0}
-            >
-              <span className={styles.toolbarIcon}>
-                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path
-    d="M5.25 1.75L2.625 5.25V17.5C2.625 17.9641 2.80937 18.4092 3.13756 18.7374C3.46575 19.0656 3.91087 19.25 4.375 19.25H16.625C17.0891 19.25 17.5342 19.0656 17.8624 18.7374C18.1906 18.4092 18.375 17.9641 18.375 17.5V5.25L15.75 1.75H5.25Z"
-    stroke="#A4AFB7" strokeWidth="1.2"/>
-<path d="M2.625 5.25H18.375" stroke="#A4AFB7" strokeWidth="1.2"/>
-<path
-    d="M14 8.75C14 9.67826 13.6313 10.5685 12.9749 11.2249C12.3185 11.8813 11.4283 12.25 10.5 12.25C9.57174 12.25 8.6815 11.8813 8.02513 11.2249C7.36875 10.5685 7 9.67826 7 8.75"
-    stroke="#A4AFB7" strokeWidth="1.2"/>
-</svg>
-
-              </span>
-              Добавить отмеченные в корзину
-            </button>
-
-            <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={handleClearAll}
-            >
-              <span className={styles.toolbarIcon}>
-                <TrashIcon />
-</span>
-              Очистить все
-            </button>
+            <div className={styles.toolbarActions}>{bulkActions}</div>
           </div>
 
           <ProductList
@@ -114,6 +120,8 @@ export const FavoritesPage: React.FC = () => {
               onToggleSelect={handleToggleOne}
               emptyMessage="В избранном пока нет товаров"
           />
+
+          <div className={styles.bottomActions}>{bulkActions}</div>
         </div>
       </div>
   );

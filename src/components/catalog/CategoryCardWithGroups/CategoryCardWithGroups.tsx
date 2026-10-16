@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CategoryWithHierarchy } from '@/types/category.types';
 import { ID } from '@/types/common.types';
@@ -7,6 +7,7 @@ import {
     buildSubcategoryUrl,
     buildGroupUrl,
 } from '@/config/routes.config';
+import { ChevronIcon } from '@/components/common/icons';
 import styles from './CategoryCardWithGroups.module.css';
 
 interface GroupLite {
@@ -26,6 +27,8 @@ export const CategoryCardWithGroups: React.FC<CategoryCardWithGroupsProps> = ({
                                                                                   category,
                                                                                   previewLimit = 6,
                                                                               }) => {
+    const listId = useId();
+    const [expanded, setExpanded] = useState(false);
     const allGroups: GroupLite[] = [];
     category.subcategories.forEach(sub => {
         sub.groups?.forEach(g => {
@@ -44,7 +47,7 @@ export const CategoryCardWithGroups: React.FC<CategoryCardWithGroupsProps> = ({
         ? buildSubcategoryUrl(category.slug, category.subcategories[0].slug)
         : buildCategoryUrl(category.slug);
 
-    const displayGroups = allGroups.slice(0, previewLimit);
+    const displayGroups = expanded ? allGroups : allGroups.slice(0, previewLimit);
     const hasMoreGroups = allGroups.length > previewLimit;
 
     return (
@@ -54,30 +57,38 @@ export const CategoryCardWithGroups: React.FC<CategoryCardWithGroupsProps> = ({
                     <span dangerouslySetInnerHTML={{ __html: category.icon || '' }} />
                 </div>
                 <h3 className={styles.name}>{category.name}</h3>
-                {hasMoreGroups && (
-                    <span className={styles.more}>
-            Ещё {allGroups.length - previewLimit}...
-          </span>
-                )}
             </Link>
 
-            <div className={styles.groupsList}>
+            <div className={styles.groupsList} id={listId}>
                 {displayGroups.map(group => (
                     <Link
                         key={group.id}
                         to={buildGroupUrl(category.slug, group.subcategorySlug, group.slug)}
                         className={styles.groupLink}
                     >
-                        {group.image && (
-                            <img
-                                src={group.image}
-                                alt={group.name}
-                                className={styles.groupImage}
-                            />
-                        )}
+                        <span className={styles.imageBox}>
+                            {group.image && (
+                                <img src={group.image} alt="" className={styles.groupImage} loading="lazy" />
+                            )}
+                        </span>
                         <span>{group.name}</span>
                     </Link>
                 ))}
+            </div>
+
+            <div className={styles.moreRow}>
+                {hasMoreGroups && (
+                    <button
+                        type="button"
+                        className={styles.moreButton}
+                        onClick={() => setExpanded(value => !value)}
+                        aria-expanded={expanded}
+                        aria-controls={listId}
+                    >
+                        {expanded ? 'Свернуть' : 'Показать ещё'}
+                        <ChevronIcon direction={expanded ? 'up' : 'down'} />
+                    </button>
+                )}
             </div>
         </div>
     );

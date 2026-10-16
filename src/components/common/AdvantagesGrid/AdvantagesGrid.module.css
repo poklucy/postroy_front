@@ -36,4 +36,60 @@
     .grid {
         grid-template-columns: repeat(2, 1fr) !important;
     }
+
+    .scroll {
+        grid-template-columns: none !important;
+        grid-auto-flow: column;
+        grid-auto-columns: 46%;
+        gap: 10px;
+        margin: 0 -3.5vw;
+        padding: 0 3.5vw 4px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 3.5vw;
+        scrollbar-width: none;
+    }
+
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scroll .item {
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 12px;
+        border-color: var(--light-grey);
+        border-radius: 14px;
+        scroll-snap-align: start;
+    }
+
+    .scroll .icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .scroll .icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .scroll .text {
+        align-items: flex-start;
+        text-align: left;
+        gap: 4px;
+    }
+
+    .scroll h3 {
+        font-size: 13px;
+    }
+
+    .scroll p {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 840px) {
+    .scroll {
+        grid-auto-columns: 30%;
+    }
 }

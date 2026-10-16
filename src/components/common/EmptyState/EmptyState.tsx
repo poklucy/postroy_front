@@ -48,6 +48,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
             <SectionBlock
                 accent="Недавно вы смотрели"
                 title="Ещё не решили?"
+                mobileTitle="Недавно вы смотрели"
+                compactOnMobile
                 description="Товары, которые вас заинтересовали, — вернитесь к ним за один клик."
                 linkText="Смотреть всю подборку "
                 linkHref="/catalog"

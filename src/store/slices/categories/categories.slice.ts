@@ -1,29 +1,37 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { CategoryWithHierarchy } from '@/types/category.types';
+import { IDLE_REQUEST, RequestState } from '@/types/request.types';
 import { categoriesApi } from '@/api/categories.api';
+import { createApiThunk, getRejectedError } from '@/store/createApiThunk';
+
+interface HierarchyRequest extends RequestState {
+  slug: string | null;
+}
 
 interface CategoriesState {
   itemsWithHierarchy: CategoryWithHierarchy[];
+  listRequest: RequestState;
   currentHierarchy: CategoryWithHierarchy | null;
-  isLoadingList: boolean;
-  isLoadingHierarchy: boolean;
-  error: string | null;
+  hierarchyRequest: HierarchyRequest;
 }
 
 const initialState: CategoriesState = {
   itemsWithHierarchy: [],
+  listRequest: IDLE_REQUEST,
   currentHierarchy: null,
-  isLoadingList: false,
-  isLoadingHierarchy: false,
-  error: null,
+  hierarchyRequest: { ...IDLE_REQUEST, slug: null },
 };
 
-export const fetchAllCategoriesWithHierarchy = createAsyncThunk(
+export const fetchAllCategoriesWithHierarchy = createApiThunk(
     'categories/fetchAllWithHierarchy',
-    () => categoriesApi.getAllWithHierarchy()
+    () => categoriesApi.getAllWithHierarchy(),
+    {
+      condition: (_, { getState }) =>
+        (getState() as { categories: CategoriesState }).categories.listRequest.status !== 'loading',
+    }
 );
 
-export const fetchCategoryHierarchy = createAsyncThunk(
+export const fetchCategoryHierarchy = createApiThunk(
     'categories/fetchHierarchy',
     (slug: string) => categoriesApi.getHierarchy(slug)
 );
@@ -35,29 +43,27 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder
         .addCase(fetchAllCategoriesWithHierarchy.pending, (state) => {
-          state.isLoadingList = true;
-          state.error = null;
+          state.listRequest = { status: 'loading', error: null };
         })
         .addCase(fetchAllCategoriesWithHierarchy.fulfilled, (state, action) => {
-          state.isLoadingList = false;
           state.itemsWithHierarchy = action.payload;
+          state.listRequest = { status: 'succeeded', error: null };
         })
         .addCase(fetchAllCategoriesWithHierarchy.rejected, (state, action) => {
-          state.isLoadingList = false;
-          state.error = action.error.message || 'Ошибка загрузки иерархии';
+          state.listRequest = { status: 'failed', error: getRejectedError(action) };
         })
 
-        .addCase(fetchCategoryHierarchy.pending, (state) => {
-          state.isLoadingHierarchy = true;
-          state.error = null;
+        .addCase(fetchCategoryHierarchy.pending, (state, action) => {
+          state.hierarchyRequest = { status: 'loading', error: null, slug: action.meta.arg };
         })
         .addCase(fetchCategoryHierarchy.fulfilled, (state, action) => {
-          state.isLoadingHierarchy = false;
+          if (state.hierarchyRequest.slug !== action.meta.arg) return;
           state.currentHierarchy = action.payload;
+          state.hierarchyRequest = { status: 'succeeded', error: null, slug: action.meta.arg };
         })
         .addCase(fetchCategoryHierarchy.rejected, (state, action) => {
-          state.isLoadingHierarchy = false;
-          state.error = action.error.message || 'Ошибка загрузки иерархии';
+          if (state.hierarchyRequest.slug !== action.meta.arg) return;
+          state.hierarchyRequest = { status: 'failed', error: getRejectedError(action), slug: action.meta.arg };
         });
   },
 });

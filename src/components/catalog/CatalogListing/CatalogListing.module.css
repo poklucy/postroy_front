@@ -1,0 +1,91 @@
+.catalog {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filtersButton,
+.summary {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .catalog {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        width: 100%;
+        gap: 16px;
+    }
+
+    .toolbar {
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .switcher {
+        margin-left: auto;
+    }
+
+    button.filtersButton {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--light-grey);
+        border-radius: 4px;
+        background: var(--white);
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .filtersIcon {
+        position: relative;
+        display: flex;
+    }
+
+    .badge {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        min-width: 15px;
+        height: 15px;
+        padding: 0 3px;
+        border-radius: 8px;
+        background: var(--brand);
+        color: var(--white);
+        font-size: 10px;
+        line-height: 15px;
+        text-align: center;
+    }
+
+    .summary {
+        display: block;
+    }
+}
+
+@media (max-width: 840px) {
+    .toolbar :global(button) {
+        font-size: 12px;
+    }
+}

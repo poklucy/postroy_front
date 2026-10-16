@@ -1,155 +1,118 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EntityHeader } from '@/components/catalog/EntityHeader';
-import { EntityGrid } from '@/components/catalog/EntityGrid';
-import { ProductList } from '@/components/product/ProductList';
-import {
-    buildSubcategoryUrl,
-    buildGroupUrl,
-} from '@/config/routes.config';
+import { EntityGrid, EntityGridItem } from '@/components/catalog/EntityGrid';
+import { CatalogListing } from '@/components/catalog/CatalogListing';
+import { CatalogLevelSkeleton } from '@/components/catalog/CatalogSkeleton';
+import { StatusMessage } from '@/components/common/StatusMessage';
+import { buildGroupUrl, buildSubcategoryUrl } from '@/config/routes.config';
+import { STATUS_MESSAGES } from '@/config/statusMessages';
 import { useCatalogContext } from '@/hooks/useCatalogContext';
-import { ViewSwitcher, ViewMode } from '@/components/common/ViewSwitcher';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 import styles from './CatalogLevelPage.module.css';
-import { FilterPanel } from '@/components/common/FilterPanel';
-import { SortDropdown, SortValue } from '@/components/common/SortDropdown';
+
+interface LevelView {
+    title: string;
+    description?: string;
+    grid?: {
+        items: EntityGridItem[];
+        buildUrl: (item: EntityGridItem) => string;
+        title?: string;
+        emptyMessage: string;
+    };
+    emptyMessage: string;
+}
 
 export const CatalogLevelPage: React.FC = () => {
     const {
         level,
         hierarchy,
         hierarchyReady,
-        hierarchyLoading,
         currentSubcategory,
         currentGroup,
         products,
         productsLoading,
+        productsError,
+        retryProducts,
+        hierarchyError,
+        retryHierarchy,
+        notFound,
     } = useCatalogContext();
 
-    const [viewMode, setViewMode] = useState<ViewMode>('grid');
-
-    const [sort, setSort] = useState<SortValue>('popular');
-
-    if (!hierarchyReady) {
-        if (hierarchyLoading) {
-            return <div className={styles.loading}>Загрузка...</div>;
-        }
-        return <div className={styles.notFound}>Категория не найдена</div>;
+    if (notFound) {
+        return <NotFoundPage {...STATUS_MESSAGES.category.notFound} />;
     }
+
+    if (hierarchyError) {
+        return (
+            <div className="page">
+                <Breadcrumbs/>
+                <StatusMessage
+                    className={styles.status}
+                    error={hierarchyError}
+                    text={STATUS_MESSAGES.category.error}
+                    onRetry={retryHierarchy}
+                />
+            </div>
+        );
+    }
+
+    if (!hierarchyReady || !hierarchy) {
+        return <CatalogLevelSkeleton />;
+    }
+
+    if (level === 'category' && hierarchy.subcategories.length === 1) {
+        return <Navigate to={buildSubcategoryUrl(hierarchy.slug, hierarchy.subcategories[0].slug)} replace />;
+    }
+
+    let view: LevelView;
 
     if (level === 'category') {
-        if (hierarchy!.subcategories.length === 1) {
-            const only = hierarchy!.subcategories[0];
-            return (
-                <Navigate
-                    to={buildSubcategoryUrl(hierarchy!.slug, only.slug)}
-                    replace
-                />
-            );
-        }
-
-        return (
-            <div className="page">
-                <Breadcrumbs/>
-                <EntityHeader
-                    title={hierarchy!.name}
-                    description={hierarchy!.description}
-                    count={products.length}
-                />
-                <EntityGrid
-                    items={hierarchy!.subcategories}
-                    buildUrl={item => buildSubcategoryUrl(hierarchy!.slug, item.slug)}
-                    emptyMessage="В этой категории пока нет подкатегорий"
-                />
-                <div className={styles.catalog}>
-                    <FilterPanel totalCount={products.length} />
-                    <div className={styles.catalogContainer}>
-                        <div className={styles.toolbar}>
-                            <SortDropdown value={sort} onChange={setSort} />
-                            <ViewSwitcher value={viewMode} onChange={setViewMode}/>
-                        </div>
-                        <ProductList
-                            products={products}
-                            columns={3}
-                            loading={productsLoading}
-                            emptyMessage="В этой категории пока нет товаров"
-                            viewMode={viewMode}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (level === 'subcategory') {
-        if (!currentSubcategory) {
-            return <div className={styles.notFound}>Подкатегория не найдена</div>;
-        }
-
-        return (
-            <div className="page">
-                <Breadcrumbs/>
-                <EntityHeader
-                    title={currentSubcategory.name}
-                    description={currentSubcategory.description}
-                    count={products.length}
-                />
-                <EntityGrid
-                    items={currentSubcategory.groups ?? []}
-                    buildUrl={item =>
-                        buildGroupUrl(hierarchy!.slug, currentSubcategory.slug, item.slug)
-                    }
-                    title="Группы товаров"
-                    emptyMessage="В этой подкатегории пока нет групп"
-                />
-                <div className={styles.catalog}>
-                    <FilterPanel totalCount={products.length}/>
-                    <div className={styles.catalogContainer}>
-                        <div className={styles.toolbar}>
-                            <SortDropdown value={sort} onChange={setSort} />
-                            <ViewSwitcher value={viewMode} onChange={setViewMode}/>
-                        </div>
-                        <ProductList
-                            products={products}
-                            columns={3}
-                            loading={productsLoading}
-                            viewMode={viewMode}
-                            emptyMessage="В этой подкатегории пока нет товаров"
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (!currentGroup) {
-        return <div className={styles.notFound}>Группа не найдена</div>;
+        view = {
+            title: hierarchy.name,
+            description: hierarchy.description,
+            grid: {
+                items: hierarchy.subcategories,
+                buildUrl: item => buildSubcategoryUrl(hierarchy.slug, item.slug),
+                emptyMessage: 'В этой категории пока нет подкатегорий',
+            },
+            emptyMessage: STATUS_MESSAGES.products.empty.category.title,
+        };
+    } else if (level === 'subcategory') {
+        if (!currentSubcategory) return <CatalogLevelSkeleton />;
+        view = {
+            title: currentSubcategory.name,
+            description: currentSubcategory.description,
+            grid: {
+                items: currentSubcategory.groups ?? [],
+                buildUrl: item => buildGroupUrl(hierarchy.slug, currentSubcategory.slug, item.slug),
+                title: 'Группы товаров',
+                emptyMessage: 'В этой подкатегории пока нет групп',
+            },
+            emptyMessage: STATUS_MESSAGES.products.empty.subcategory.title,
+        };
+    } else {
+        if (!currentGroup) return <CatalogLevelSkeleton />;
+        view = {
+            title: currentGroup.name,
+            description: currentGroup.description,
+            emptyMessage: STATUS_MESSAGES.products.empty.group.title,
+        };
     }
 
     return (
         <div className="page">
             <Breadcrumbs/>
-            <EntityHeader
-                title={currentGroup.name}
-                description={currentGroup.description}
-                count={products.length}
+            <EntityHeader title={view.title} description={view.description} count={products.length} />
+            {view.grid && <EntityGrid {...view.grid} />}
+            <CatalogListing
+                products={products}
+                loading={productsLoading}
+                error={productsError}
+                onRetry={retryProducts}
+                emptyMessage={view.emptyMessage}
             />
-            <div className={styles.catalog}>
-                <FilterPanel totalCount={products.length}/>
-                <div className={styles.catalogContainer}>
-                    <div className={styles.toolbar}>
-                        <SortDropdown value={sort} onChange={setSort} />
-                        <ViewSwitcher value={viewMode} onChange={setViewMode}/>
-                    </div>
-                    <ProductList
-                        products={products}
-                        columns={3}
-                        loading={productsLoading}
-                        viewMode={viewMode}
-                        emptyMessage="В этой группе пока нет товаров"
-                    />
-                </div>
-            </div>
         </div>
     );
 };

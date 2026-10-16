@@ -1,20 +1,18 @@
 import React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/store/hooks';
 import { selectUserOrders } from '@/store/slices/auth';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EmptyMessage } from '@/components/common/EmptyMessage';
-import { ROUTES } from '@/config/routes.config';
+import { ProfilePageHeader } from '@/components/profile/ProfilePageHeader';
+import { OrdersTabs } from '@/components/profile/OrdersTabs';
 import { Order, OrderStatus } from '@/types/order.types';
 import { formatPrice } from '@/utils';
 import styles from './ProfileOrdersPage.module.css';
 
 type Tab = 'current' | 'returns';
 
-const TABS: { id: Tab; label: string }[] = [
-    { id: 'current', label: 'Текущие заказы' },
-    { id: 'returns', label: 'Возвраты' },
-];
+const TAB_IDS: Tab[] = ['current', 'returns'];
 
 const STATUS_LABELS: Record<OrderStatus, string> = {
     pending: 'Ожидает подтверждения',
@@ -44,10 +42,10 @@ const EMPTY_MESSAGES: Record<Tab, string> = {
 const filterOrders = (orders: Order[], tab: Tab) =>
     tab === 'current' ? orders.filter(o => !FINISHED_STATUSES.includes(o.status)) : [];
 
-const isTab = (value: string | null): value is Tab => TABS.some(t => t.id === value);
+const isTab = (value: string | null): value is Tab => TAB_IDS.some(id => id === value);
 
 export const ProfileOrdersPage: React.FC = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const tabParam = searchParams.get('tab');
     const tab: Tab = isTab(tabParam) ? tabParam : 'current';
     const orders = filterOrders(useAppSelector(selectUserOrders), tab);
@@ -55,23 +53,9 @@ export const ProfileOrdersPage: React.FC = () => {
     return (
         <div className={`page ${styles.ordersPage}`}>
             <Breadcrumbs />
-            <h1>Мои заказы</h1>
+            <ProfilePageHeader title="Мои заказы" />
 
-            <div className={styles.tabs} role="tablist">
-                {TABS.map(t => (
-                    <button
-                        key={t.id}
-                        type="button"
-                        role="tab"
-                        aria-selected={t.id === tab}
-                        className={`${styles.tab} ${t.id === tab ? styles.tabActive : ''}`}
-                        onClick={() => setSearchParams({ tab: t.id })}
-                    >
-                        {t.label}
-                    </button>
-                ))}
-                <Link to={ROUTES.PROFILE_HISTORY} className={styles.tab}>История покупок</Link>
-            </div>
+            <OrdersTabs active={tab} />
 
             {orders.length === 0 ? (
                 <EmptyMessage>{EMPTY_MESSAGES[tab]}</EmptyMessage>

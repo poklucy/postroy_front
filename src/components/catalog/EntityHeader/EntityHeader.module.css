@@ -1,1 +1,7 @@
-
+@media (max-width: 840px) {
+    .title {
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--grey);
+        text-transform: uppercase;
+    }
+}

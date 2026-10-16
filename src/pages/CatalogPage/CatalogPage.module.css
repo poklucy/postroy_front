@@ -5,11 +5,8 @@
   padding-bottom: 90px;
 }
 
-.loading {
-  padding: 60px 20px;
-  text-align: center;
-  color: #666;
-  font-size: 16px;
+.status {
+  margin-bottom: 90px;
 }
 
 .SectionBrand{
@@ -22,3 +19,14 @@
   }
 }
 
+
+@media (max-width: 840px) {
+  .categoriesGrid {
+    gap: 28px;
+    padding-bottom: 40px;
+  }
+
+  .SectionBrand {
+    padding-bottom: 0;
+  }
+}

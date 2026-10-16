@@ -16,7 +16,15 @@ export const addViewedProduct = (product: ProductCard) => {
   const viewed = [product, ...getViewedProducts().filter(p => p.id !== product.id)].slice(0, VIEWED_LIMIT);
   try {
     localStorage.setItem(VIEWED_KEY, JSON.stringify(viewed));
-  } catch (error) {
-    console.error('Не удалось сохранить историю просмотров', error);
+  } catch {
+    /* storage unavailable or full — history is simply not persisted */
+  }
+};
+
+export const clearViewedProducts = () => {
+  try {
+    localStorage.removeItem(VIEWED_KEY);
+  } catch {
+    /* storage unavailable */
   }
 };

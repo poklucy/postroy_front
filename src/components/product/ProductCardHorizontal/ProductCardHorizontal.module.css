@@ -186,3 +186,114 @@
         padding-top: 0;
     }
 }
+
+@media (max-width: 840px) {
+    .item:not(.itemSelectable) {
+        grid-template-columns: minmax(0, 45%) minmax(0, 1fr);
+        grid-template-areas:
+            "image info"
+            "image buy";
+        grid-template-rows: auto 1fr;
+        gap: 6px 10px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--light-grey);
+    }
+
+    .item:not(.itemSelectable) .imageWrapper {
+        grid-area: image;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        align-self: start;
+    }
+
+    .item:not(.itemSelectable) .info {
+        grid-area: info;
+        gap: 4px;
+    }
+
+    .item:not(.itemSelectable) .buyBlock {
+        grid-area: buy;
+        grid-column: auto;
+        align-self: end;
+        gap: 4px;
+    }
+
+    .title {
+        font-size: 13px;
+    }
+
+    .item:not(.itemSelectable) .description,
+    .item:not(.itemSelectable) .tags,
+    .item:not(.itemSelectable) .bonus {
+        display: none;
+    }
+
+    .price {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 840px) {
+    .itemSelectable {
+        position: relative;
+        grid-template-columns: 18px 80px minmax(0, 1fr) 24px;
+        grid-template-areas:
+            "check image info side"
+            "check image buy side";
+        grid-template-rows: auto 1fr;
+        gap: 4px 12px;
+        padding: 16px 0;
+        border-bottom-color: var(--light-grey);
+    }
+
+    .itemSelectable:first-child {
+        border-top-color: var(--light-grey);
+    }
+
+    .itemSelectable .selectBox {
+        grid-area: check;
+        justify-content: flex-start;
+    }
+
+    .itemSelectable .imageWrapper {
+        grid-area: image;
+        position: static;
+        width: 80px;
+        height: 80px;
+        border: none;
+    }
+
+    .itemSelectable .imageWrapper > :first-child {
+        display: none;
+    }
+
+    .itemSelectable .actionButtons {
+        top: 16px;
+        right: 0;
+        gap: 8px;
+    }
+
+    .itemSelectable .info {
+        grid-area: info;
+        gap: 2px;
+    }
+
+    .itemSelectable .buyBlock {
+        grid-area: buy;
+        grid-column: auto;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .itemSelectable .description,
+    .itemSelectable .tags,
+    .itemSelectable .bonus,
+    .itemSelectable .stock {
+        display: none;
+    }
+
+    .item:hover .imageWrapper {
+        border-color: transparent;
+    }
+}

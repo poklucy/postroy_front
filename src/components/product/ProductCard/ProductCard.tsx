@@ -6,6 +6,7 @@ import { ProductActions } from '@/components/product/ProductActions';
 import { ProductCartButton } from '@/components/product/ProductCartButton';
 import { ProductCard as IProductCard } from '@/types/product.types';
 import { getProductUrl } from '@/utils/product';
+import { ImageSlider } from '@/components/product/ImageSlider';
 import styles from './ProductCard.module.css';
 
 interface ProductCardProps {
@@ -22,11 +23,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <Link to={productUrl} className={styles.imageLink}>
           <div className={styles.imageWrapper}>
-            <img
-                src={product.mainImage}
+            <ImageSlider
+                images={product.images?.length ? product.images : [product.mainImage]}
                 alt={product.name}
-                className={styles.image}
-                loading="lazy"
+                hoverSwitch
+                className={styles.slider}
+                imageClassName={styles.image}
             />
           </div>
         </Link>

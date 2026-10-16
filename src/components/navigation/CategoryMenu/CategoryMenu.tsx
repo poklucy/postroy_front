@@ -4,10 +4,13 @@ import { useAllCategories } from '@/hooks/useCategories';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { buildSubcategoryUrl, buildGroupUrl } from '@/config/routes.config';
 import { Icon } from '@/components/common/Icon';
+import { Spinner } from '@/components/common/Spinner';
+import { StatusMessage } from '@/components/common/StatusMessage';
+import { STATUS_MESSAGES } from '@/config/statusMessages';
 import styles from './CategoryMenu.module.css';
 
 export const CategoryMenu: React.FC = () => {
-  const { categories, isLoading } = useAllCategories();
+  const { categories, isLoading, isError, error, retry } = useAllCategories();
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -39,10 +42,6 @@ export const CategoryMenu: React.FC = () => {
 
   const activeCategoryData = categories.find(c => String(c.id) === activeCategory);
 
-  if (isLoading) {
-    return <div className={styles.loading}>Загрузка...</div>;
-  }
-
   return (
       <div className={styles.categoryMenu} ref={menuRef}>
         <button
@@ -66,6 +65,18 @@ export const CategoryMenu: React.FC = () => {
             <div className={styles.overlay}>
               <div className={styles.menuContainer}>
                 <div className={`${styles.menuContainerMain} container`}>
+                  {isError ? (
+                    <StatusMessage
+                        className={styles.status}
+                        error={error}
+                        text={STATUS_MESSAGES.categoryMenu.error}
+                        onRetry={retry}
+                        compact
+                    />
+                  ) : isLoading && categories.length === 0 ? (
+                    <Spinner className={styles.status} label={STATUS_MESSAGES.categoryMenu.loading} />
+                  ) : (
+                  <>
                   <div className={styles.columnLeft}>
                     <ul className={styles.categoryList}>
                       {categories.map((category) => (
@@ -120,12 +131,14 @@ export const CategoryMenu: React.FC = () => {
                         <div className={styles.emptyState}>
                           <p>
                             {activeCategoryData
-                                ? 'В этой категории пока нет подкатегорий'
-                                : 'Выберите категорию'}
+                                ? STATUS_MESSAGES.categoryMenu.empty.title
+                                : STATUS_MESSAGES.categoryMenu.hint.title}
                           </p>
                         </div>
                     )}
                   </div>
+                  </>
+                  )}
                 </div>
               </div>
             </div>

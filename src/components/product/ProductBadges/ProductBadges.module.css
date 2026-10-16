@@ -58,3 +58,32 @@
     align-items: center;
     justify-content: center;
 }
+
+.superPrice,
+.new,
+.hit {
+    height: 23px;
+    min-height: 0;
+    padding: 0 7px;
+    background-size: 100% 100%;
+    white-space: nowrap;
+}
+
+@media (max-width: 840px) {
+    .badges {
+        top: 6px;
+        left: 6px;
+        right: 36px;
+        gap: 3px;
+    }
+
+    .superPrice,
+    .new,
+    .hit {
+        width: 84px;
+        height: 20px;
+        padding: 0 6px;
+        font-size: 11px;
+        line-height: 1;
+    }
+}

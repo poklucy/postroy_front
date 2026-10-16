@@ -1,0 +1,55 @@
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-bottom: 90px;
+}
+
+.categoryCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.level {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 60px;
+}
+
+.entityGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 20px;
+}
+
+.catalog {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 40px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+@media (max-width: 1024px) {
+    .categoryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .entityGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .catalog {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        display: none;
+    }
+}

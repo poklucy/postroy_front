@@ -72,7 +72,7 @@ export const PersonPage: React.FC = () => {
                     </div>
                 </div>
 
-                <AdvantagesGrid items={BUSINESS_ADVANTAGES} />
+                <AdvantagesGrid items={BUSINESS_ADVANTAGES} mobileScroll />
 
                 <div className={styles.accordionSection}>
                     <div className={styles.accentBreadcrumbs}>

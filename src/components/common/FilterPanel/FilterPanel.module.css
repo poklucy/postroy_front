@@ -166,3 +166,74 @@
 .panel :global(.rc-slider-rail) {
     height: 4px;
 }
+
+.drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    animation: drawerIn 0.2s ease-out;
+}
+
+.drawerHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 3.5vw;
+    background: var(--brand);
+    color: var(--white);
+}
+
+.drawerTitle {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+button.drawerReset,
+button.drawerClose {
+    border: none;
+    background: none;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.drawerReset {
+    padding: 0;
+    font-size: 13px;
+    text-decoration: underline;
+}
+
+.drawerClose {
+    display: flex;
+    margin-left: auto;
+    padding: 4px;
+}
+
+.drawerBody {
+    flex: 1;
+    width: auto;
+    padding: 16px 3.5vw;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.drawerFooter {
+    padding: 12px 3.5vw calc(12px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--light-grey);
+    background: var(--white);
+}
+
+@keyframes drawerIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 1024px) {
+    .groupHeader,
+    .groupHeaderStatic {
+        font-size: 14px;
+    }
+}

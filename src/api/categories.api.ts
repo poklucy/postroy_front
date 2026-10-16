@@ -1,29 +1,25 @@
 import { Category, CategoryWithHierarchy } from '@/types/category.types';
-import { delay } from '@/utils/helpers';
+import { ApiError } from './apiError';
+import { mockRequest } from './mock';
 import { mockCategories, mockCategoryHierarchy } from './mockData/categories';
 
 export const categoriesApi = {
-  getAll: async (): Promise<Category[]> => {
-    await delay(300);
-    return mockCategories;
-  },
+  getAll: (): Promise<Category[]> => mockRequest('catalog', 300, () => mockCategories),
 
-  getBySlug: async (slug: string): Promise<Category> => {
-    await delay(200);
-    const category = mockCategories.find(c => c.slug === slug);
-    if (!category) throw new Error('Category not found');
-    return category;
-  },
+  getBySlug: (slug: string): Promise<Category> =>
+      mockRequest('category', 200, () => {
+        const category = mockCategories.find(c => c.slug === slug);
+        if (!category) throw new ApiError('not_found', `Category "${slug}" not found`, 404);
+        return category;
+      }),
 
-  getAllWithHierarchy: async (): Promise<CategoryWithHierarchy[]> => {
-    await delay(300);
-    return Object.values(mockCategoryHierarchy);
-  },
+  getAllWithHierarchy: (): Promise<CategoryWithHierarchy[]> =>
+      mockRequest('catalog', 300, () => Object.values(mockCategoryHierarchy)),
 
-  getHierarchy: async (slug: string): Promise<CategoryWithHierarchy> => {
-    await delay(300);
-    const hierarchy = mockCategoryHierarchy[slug];
-    if (!hierarchy) throw new Error('Category hierarchy not found');
-    return hierarchy;
-  },
+  getHierarchy: (slug: string): Promise<CategoryWithHierarchy> =>
+      mockRequest('category', 300, () => {
+        const hierarchy = mockCategoryHierarchy[slug];
+        if (!hierarchy) throw new ApiError('not_found', `Category "${slug}" not found`, 404);
+        return hierarchy;
+      }),
 };

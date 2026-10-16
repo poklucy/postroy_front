@@ -1,7 +1,9 @@
 import React, { useId, useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { delay } from '@/utils/helpers';
+import { mockRequest } from '@/api/mock';
+import { toRequestError } from '@/api/apiError';
+import { STATUS_MESSAGES, getInlineErrorMessage } from '@/config/statusMessages';
 import { formatPhoneInput, isPhoneComplete, PHONE_PLACEHOLDER } from '@/utils/phone';
 import styles from './ContactForm.module.css';
 
@@ -20,19 +22,24 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSubmit }) => {
         e.preventDefault();
 
         if (!isPhoneComplete(phone)) {
-            setError('Пожалуйста, введите полный номер телефона');
+            setError(STATUS_MESSAGES.contactForm.invalidPhone);
             return;
         }
 
         setIsLoading(true);
-        await delay(1000);
-        onSubmit?.(phone);
-        setIsLoading(false);
-        setIsSent(true);
+        setError('');
+        try {
+            await mockRequest('contact', 1000, () => onSubmit?.(phone));
+            setIsSent(true);
+        } catch (requestError) {
+            setError(getInlineErrorMessage(toRequestError(requestError), STATUS_MESSAGES.contactForm.error));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     if (isSent) {
-        return <p className={styles.success}>Спасибо! Менеджер свяжется с вами в ближайшее время.</p>;
+        return <p className={styles.success}>{STATUS_MESSAGES.contactForm.success}</p>;
     }
 
     return (
@@ -56,7 +63,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSubmit }) => {
             />
 
             <Button type="submit" variant="yellow" size="lg" fullWidth disabled={isLoading}>
-                {isLoading ? 'Отправка...' : 'Оставить заявку'}
+                {isLoading ? STATUS_MESSAGES.contactForm.sending : 'Оставить заявку'}
             </Button>
         </form>
     );

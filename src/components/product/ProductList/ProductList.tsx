@@ -2,6 +2,10 @@ import React from 'react';
 import { ProductCard as ProductCardType } from '@/types/product.types';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardHorizontal } from '@/components/product/ProductCardHorizontal';
+import { ProductListSkeleton } from '@/components/product/ProductListSkeleton';
+import { StatusMessage } from '@/components/common/StatusMessage';
+import { STATUS_MESSAGES, StatusText } from '@/config/statusMessages';
+import { RequestError } from '@/types/request.types';
 import styles from './ProductList.module.css';
 
 export type ViewMode = 'grid' | 'list';
@@ -10,6 +14,9 @@ interface ProductListProps {
     products: ProductCardType[];
     columns?: number;
     loading?: boolean;
+    error?: RequestError | null;
+    onRetry?: () => void;
+    errorText?: StatusText;
     emptyMessage?: string;
     viewMode?: ViewMode;
 
@@ -22,14 +29,21 @@ export const ProductList: React.FC<ProductListProps> = ({
                                                             products,
                                                             columns = 4,
                                                             loading,
-                                                            emptyMessage = 'Товары не найдены',
+                                                            error,
+                                                            onRetry,
+                                                            errorText = STATUS_MESSAGES.products.error,
+                                                            emptyMessage = STATUS_MESSAGES.products.empty.default.title,
                                                             viewMode = 'grid',
                                                             selectable = false,
                                                             selectedIds = [],
                                                             onToggleSelect,
                                                         }) => {
     if (loading) {
-        return <div className={styles.loading}>Загрузка...</div>;
+        return <ProductListSkeleton columns={columns} viewMode={viewMode} />;
+    }
+
+    if (error) {
+        return <StatusMessage error={error} text={errorText} onRetry={onRetry} />;
     }
 
     if (!products || products.length === 0) {

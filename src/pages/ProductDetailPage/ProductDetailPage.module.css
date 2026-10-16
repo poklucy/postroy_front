@@ -26,10 +26,9 @@
 
 .gallery {
   display: flex;
-  flex-direction: column-reverse;
-  gap: 20px;
+  flex-direction: column;
+  gap: 16px;
   margin-bottom: 24px;
-  align-items: flex-start;
   width: 100%;
 }
 
@@ -45,24 +44,63 @@
   min-width: 420px;
 }
 
-.mainImage img {
+.galleryImage {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.thumbnails {
+.thumbsRow {
+  position: relative;
+  padding: 0 4px;
+}
+
+button.thumbArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--grey);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  color: var(--grey);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+button.thumbArrow:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+button.thumbArrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.thumbArrowPrev {
+  left: -20px;
+}
+
+.thumbArrowNext {
+  right: -20px;
+}
+
+.thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
-  width: 80px;
-  flex-shrink: 0;
 }
 
 .thumbnail {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  aspect-ratio: 1;
   border: 1px solid var(--light-grey);
   overflow: hidden;
   cursor: pointer;
@@ -319,6 +357,10 @@
   color: #1a1a1a;
 }
 
+.outOfStock {
+  color: var(--grey);
+}
+
 .stockIcon {
   display: inline-flex;
   align-items: center;
@@ -370,12 +412,8 @@
 
 .deliveryLine span { }
 
-.loading,
-.notFound {
-  text-align: center;
-  padding: 80px 0;
-  font-size: 18px;
-  color: #7a7a7a;
+.status {
+  margin: 20px 0 60px;
 }
 
 @media (max-width: 1100px) {
@@ -386,7 +424,160 @@
 
 @media (max-width: 768px) {
   .title { font-size: 26px; }
-  .gallery { flex-direction: column-reverse; }
-  .thumbnails { flex-direction: row; width: auto; }
   .buyCurrentPrice { font-size: 22px; }
+}
+
+.mobileGallery {
+  position: relative;
+}
+
+.mobileMain {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--light-grey);
+}
+
+.mobileMain .galleryImage {
+  max-width: 88%;
+  max-height: 80%;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  border-bottom: 1px solid var(--grey);
+}
+
+button.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sectionBody {
+  padding-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+  .mobilePage {
+    gap: 18px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .metaRow {
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    font-size: 12px;
+  }
+
+  .article {
+    flex-basis: 100%;
+  }
+
+  .options {
+    gap: 12px;
+  }
+
+  .optionGroup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .optionLabel {
+    flex-shrink: 0;
+    min-width: 70px;
+    margin-bottom: 0;
+    font-size: 12px;
+  }
+
+  .optionValues {
+    gap: 8px;
+  }
+
+  .optionBtn {
+    min-width: 36px;
+    height: 34px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .buyCard {
+    gap: 12px;
+    padding: 0;
+    border: none;
+  }
+
+  .buyPriceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .buyCurrentPrice {
+    font-size: 24px;
+  }
+
+  .bonusRow,
+  .stockRow,
+  .delivery {
+    font-size: 13px;
+  }
+
+  .delivery {
+    padding-top: 0;
+  }
+
+  .descriptionText {
+    font-size: 13px;
+  }
+
+  .specGrid {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+    font-size: 12px;
+  }
+
+  .specName {
+    white-space: normal;
+    flex-shrink: 1;
+  }
+
+  .docItem {
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .docIcon,
+  .docIcon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .placeholder {
+    font-size: 13px;
+    color: var(--grey);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  .mobileMain {
+    aspect-ratio: 16 / 10;
+  }
 }

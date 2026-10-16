@@ -31,8 +31,8 @@ export const ProductSlider: React.FC<ProductSliderProps> = ({
         pagination={true}
         autoplay={autoplay}
         breakpoints={{
-          320: { slidesPerView: 1.2, spaceBetween: 12 },
-          480: { slidesPerView: 2, spaceBetween: 12 },
+          320: { slidesPerView: 2, spaceBetween: 10 },
+          600: { slidesPerView: 2.5, spaceBetween: 12 },
           768: { slidesPerView: 3, spaceBetween: 16 },
           1024: { slidesPerView: slidesPerView || 4, spaceBetween: 16 },
         }}

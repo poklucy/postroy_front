@@ -45,24 +45,38 @@
     --border-radius: 120px;
 }
 
+@media (min-width: 841px) and (max-width: 1024px) {
+    :root {
+        --h1-fz: 36px;
+        --h2-fz: 28px;
+        --h3-fz: 15px;
+        --text-fz: 14px;
+        --bold-fz: 14px;
+        --small-fz: 12px;
+        --sku-fz: 12px;
+        --btn-fz: 13px;
+        --price-fz: 18px;
+    }
+}
+
 @media (max-width: 840px) {
     :root {
-        --h1-fz: 5.455vw;
+        --h1-fz: min(5.455vw, 28px);
 
-        --h2-fz: 4.091vw;
+        --h2-fz: min(4.091vw, 22px);
 
-        --h3-fz: 3.182vw;
+        --h3-fz: min(3.182vw, 16px);
 
-        --text-fz: 3.182vw;
+        --text-fz: min(3.182vw, 15px);
 
-        --bold-fz: 3.182vw;
+        --bold-fz: min(3.182vw, 15px);
 
-        --small-fz: 2.727vw;
+        --small-fz: min(2.727vw, 13px);
 
-        --sku-fz: 2.727vw;
+        --sku-fz: min(2.727vw, 13px);
 
-        --btn-fz: 2.955vw;
+        --btn-fz: min(2.955vw, 14px);
 
-        --price-fz: 4.091vw;
+        --price-fz: min(4.091vw, 20px);
     }
 }

@@ -5,6 +5,7 @@ import { ProductCartButton } from '@/components/product/ProductCartButton';
 import { getProductUrl } from '@/utils/product';
 import { ProductCard } from '@/types/product.types';
 import { formatPrice } from '@/utils';
+import { FEATURES } from '@/config/features.config';
 import styles from '../ComparePage.module.css';
 
 interface CompareColumnProps {
@@ -12,6 +13,7 @@ interface CompareColumnProps {
     position: number;
     total: number;
     canNavigate: boolean;
+    showPager?: boolean;
     onPrev: () => void;
     onNext: () => void;
 }
@@ -29,7 +31,7 @@ const ArrowIcon: React.FC<{ direction: 'left' | 'right' }> = ({ direction }) => 
     </svg>
 );
 
-export const CompareColumn: React.FC<CompareColumnProps> = ({ item, position, total, canNavigate, onPrev, onNext }) => {
+export const CompareColumn: React.FC<CompareColumnProps> = ({ item, position, total, canNavigate, showPager = true, onPrev, onNext }) => {
     const productUrl = getProductUrl(item);
     const images = item.images?.length ? item.images : [item.mainImage];
     const [imageIndex, setImageIndex] = useState(0);
@@ -69,12 +71,15 @@ export const CompareColumn: React.FC<CompareColumnProps> = ({ item, position, to
                     <span className={styles.priceLabel}>Цена за шт.</span>
                     <span className={styles.price}>{formatPrice(item.price)}</span>
                     <ProductCartButton product={item} showGoToCart={false} />
+                    {FEATURES.loyalty && (
                     <span className={styles.bonus}>
                         Начислим баллы: <span className={styles.bonusValue}>+{item.bonusPoints ?? 0}</span>
                     </span>
+                    )}
                 </div>
             </div>
 
+            {showPager && (
             <div className={styles.pager}>
                 <button
                     type="button"
@@ -96,6 +101,7 @@ export const CompareColumn: React.FC<CompareColumnProps> = ({ item, position, to
                     <ArrowIcon direction="right" />
                 </button>
             </div>
+            )}
         </div>
     );
 };

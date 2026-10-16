@@ -1,0 +1,20 @@
+.socialLinks {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.socialLink {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.socialLink:hover {
+    background: var(--white);
+}
+
+.socialLink:hover svg path {
+    fill: var(--brand);
+    stroke: var(--brand);
+}

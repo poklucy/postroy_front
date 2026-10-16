@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/common/Button';
-import { BagIcon } from '@/components/common/icons';
+import { ROUTES } from '@/config/routes.config';
 import styles from './QuantityControls.module.css';
 
 interface QuantityControlsProps {
@@ -8,42 +8,39 @@ interface QuantityControlsProps {
     min?: number;
     max?: number;
     onChange: (value: number) => void;
-    withAddButton?: boolean;
-    onAddToCart?: () => void;
     showGoToCart?: boolean;
-    goToCartHref?: string;
     className?: string;
     disabled?: boolean;
 }
+
+const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 export const QuantityControls: React.FC<QuantityControlsProps> = ({
                                                                       value,
                                                                       min = 1,
                                                                       max = 99,
                                                                       onChange,
-                                                                      withAddButton = false,
-                                                                      onAddToCart,
                                                                       showGoToCart = false,
-                                                                      goToCartHref = '/cart',
                                                                       className,
                                                                       disabled = false,
                                                                   }) => {
-    if (withAddButton && value === 0) {
-        return (
-            <Button
-                onClick={onAddToCart}
-                disabled={disabled}
-                className={className}
-                icon={<BagIcon />}
-                fullWidth
-            >
-                В корзину
-            </Button>
-        );
-    }
+    const [draft, setDraft] = useState(String(value));
+
+    useEffect(() => setDraft(String(value)), [value]);
 
     const canDecrement = value > min;
     const canIncrement = value < max;
+
+    const commitDraft = () => {
+        const next = Number(draft);
+        if (draft.trim() === '' || Number.isNaN(next)) {
+            setDraft(String(value));
+            return;
+        }
+        const clamped = clamp(Math.round(next), Math.max(min, 1), max);
+        setDraft(String(clamped));
+        if (clamped !== value) onChange(clamped);
+    };
 
     return (
         <div className={[styles.cartControls, className].filter(Boolean).join(' ')}>
@@ -62,15 +59,16 @@ export const QuantityControls: React.FC<QuantityControlsProps> = ({
 
                 <input
                     type="number"
+                    inputMode="numeric"
                     className={styles.quantityInput}
-                    value={value}
-                    min={min}
+                    value={draft}
+                    min={Math.max(min, 1)}
                     max={max}
                     disabled={disabled}
-                    onChange={(e) => {
-                        const next = Number(e.target.value);
-                        if (Number.isNaN(next)) return;
-                        onChange(Math.max(min, Math.min(max, next)));
+                    onChange={(e) => setDraft(e.target.value)}
+                    onBlur={commitDraft}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') e.currentTarget.blur();
                     }}
                     aria-label="Количество"
                 />
@@ -89,7 +87,7 @@ export const QuantityControls: React.FC<QuantityControlsProps> = ({
             </div>
 
             {showGoToCart && (
-                <Button to={goToCartHref} size="sm" className={styles.goToCart}>
+                <Button to={ROUTES.CART} size="sm" className={styles.goToCart}>
                     Перейти в корзину
                 </Button>
             )}

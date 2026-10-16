@@ -43,24 +43,3 @@
 .searchButton:hover svg path{
   stroke: #ff6b00;
 }
-
-@media (max-width: 768px) {
-  .searchBar {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .searchBar {
-    max-width: 140px;
-  }
-
-  .searchInput {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .searchButton {
-    padding: 8px 12px;
-  }
-}

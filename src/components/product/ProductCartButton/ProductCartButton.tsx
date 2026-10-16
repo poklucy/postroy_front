@@ -17,10 +17,7 @@ export const ProductCartButton: React.FC<ProductCartButtonProps> = ({ product, s
             isInCart={cart.isInCart}
             quantity={cart.quantity}
             onAddToCart={cart.addToCart}
-            onIncrement={cart.increment}
-            onDecrement={cart.decrement}
             onQuantityChange={cart.setQuantity}
-            minQuantity={cart.minQuantity}
             maxQuantity={cart.maxQuantity}
             showGoToCart={showGoToCart}
         />

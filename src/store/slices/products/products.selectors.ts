@@ -2,17 +2,20 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { mockProducts } from '@/api/mockData/products';
 import { Product, ProductCard } from '@/types/product.types';
+import { IDLE_REQUEST, RequestState } from '@/types/request.types';
+
+const EMPTY_PRODUCTS: Product[] = [];
 
 export const selectProductsState = (state: RootState) => state.products;
 
 export const selectProductsByGroup = createSelector(
     [selectProductsState, (_: RootState, groupId: string) => groupId],
-    (productsState, groupId) => productsState.byGroup[groupId] || []
+    (productsState, groupId) => productsState.byGroup[groupId] ?? EMPTY_PRODUCTS
 );
 
 export const selectProductsByCategory = createSelector(
     [selectProductsState, (_: RootState, categoryId: string) => categoryId],
-    (productsState, categoryId) => productsState.byCategory[categoryId] || []
+    (productsState, categoryId) => productsState.byCategory[categoryId] ?? EMPTY_PRODUCTS
 );
 
 export const selectCurrentProduct = createSelector(
@@ -20,15 +23,17 @@ export const selectCurrentProduct = createSelector(
     (productsState) => productsState.currentProduct
 );
 
+export const selectProductRequest = (state: RootState) => state.products.productRequest;
+
 export const selectRelatedProducts = createSelector(
     [selectProductsState],
     (productsState) => productsState.relatedProducts
 );
 
-export const selectProductsLoading = createSelector(
-    [selectProductsState],
-    (productsState) => productsState.isLoading
-);
+export const selectListRequest = (state: RootState, key: string): RequestState =>
+    state.products.listRequests[key] ?? IDLE_REQUEST;
+
+export const selectSearchRequest = (state: RootState) => state.products.searchRequest;
 
 export const selectSearchResults = createSelector(
     [selectProductsState],
@@ -44,6 +49,7 @@ export const mapToProductCard = (product: Product): ProductCard => ({
     oldPrice: product.oldPrice,
     isSuperPrice: product.isSuperPrice,
     inStock: product.inStock,
+    stockQuantity: product.stockQuantity,
     mainImage: product.mainImage,
     images: product.images,
     rating: product.rating,

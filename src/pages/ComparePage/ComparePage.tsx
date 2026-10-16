@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { selectCompareItems, clearCompare } from '@/store/slices/compare';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EmptyState } from '@/components/common/EmptyState';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Switch } from '@/components/common/Switch';
 import { CompareColumn } from './components/CompareColumn';
 import {
@@ -11,8 +12,9 @@ import {
     buildRows,
     buildTabs,
     filterByTab,
-    pluralizeProducts,
 } from './compare.utils';
+import { pluralizeProducts } from '@/utils/helpers';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import styles from './ComparePage.module.css';
 
 const VISIBLE_COLUMNS = 2;
@@ -43,18 +45,23 @@ export const ComparePage: React.FC = () => {
         setSlots([0, 1]);
     }, [visibleKey]);
 
+    const isScrollable = useMediaQuery('(max-width: 840px)');
     const columnsCount = Math.min(VISIBLE_COLUMNS, visibleItems.length);
     const displayed = useMemo(
-        () => slots.slice(0, columnsCount).map(index => visibleItems[index]).filter(Boolean),
-        [slots, columnsCount, visibleItems]
+        () => isScrollable
+            ? visibleItems
+            : slots.slice(0, columnsCount).map(index => visibleItems[index]).filter(Boolean),
+        [isScrollable, slots, columnsCount, visibleItems]
     );
     const rows = useMemo(() => buildRows(displayed, activeTab, onlyDiff), [displayed, activeTab, onlyDiff]);
     const canNavigate = visibleItems.length > columnsCount;
 
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const closeConfirm = useCallback(() => setConfirmOpen(false), []);
+
     const handleClear = () => {
-        if (window.confirm('Очистить список сравнения?')) {
-            dispatch(clearCompare());
-        }
+        dispatch(clearCompare());
+        setConfirmOpen(false);
     };
 
     if (items.length === 0) {
@@ -78,7 +85,7 @@ export const ComparePage: React.FC = () => {
 
             <div className={styles.header}>
                 <h1>В сравнении {items.length} {pluralizeProducts(items.length)}</h1>
-                <button type="button" className={styles.clearButton} onClick={handleClear}>
+                <button type="button" className={styles.clearButton} onClick={() => setConfirmOpen(true)}>
                     <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true">
                         <path d="M1 4H15M5.5 4V1.5H10.5V4M3 4L3.8 16.5H12.2L13 4M6.5 7V13.5M9.5 7V13.5" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
                     </svg>
@@ -105,7 +112,11 @@ export const ComparePage: React.FC = () => {
                 <Switch checked={onlyDiff} onChange={setOnlyDiff}>Показать только различия</Switch>
             </div>
 
-            <div className={styles.columns}>
+            <div
+                className={`${styles.board} ${isScrollable ? styles.boardScroll : ''}`}
+                style={{ '--compare-cols': displayed.length } as React.CSSProperties}
+            >
+            <div className={`${styles.columns} ${styles.productColumns}`}>
                 {displayed.map((item, slotIndex) => (
                     <CompareColumn
                         key={`${slotIndex}-${item.id}`}
@@ -113,6 +124,7 @@ export const ComparePage: React.FC = () => {
                         position={slots[slotIndex] + 1}
                         total={visibleItems.length}
                         canNavigate={canNavigate}
+                        showPager={!isScrollable}
                         onPrev={() => setSlots(prev => shiftSlot(prev.slice(0, columnsCount), slotIndex, -1, visibleItems.length))}
                         onNext={() => setSlots(prev => shiftSlot(prev.slice(0, columnsCount), slotIndex, 1, visibleItems.length))}
                     />
@@ -140,6 +152,15 @@ export const ComparePage: React.FC = () => {
                 ))}
                 {rows.length === 0 && <p className={styles.noDiff}>Различий между товарами нет</p>}
             </div>
+            </div>
+            <ConfirmDialog
+                open={confirmOpen}
+                title="Очистить список сравнения?"
+                description="Все товары будут удалены из сравнения."
+                confirmText="Очистить"
+                onConfirm={handleClear}
+                onCancel={closeConfirm}
+            />
         </div>
     );
 };

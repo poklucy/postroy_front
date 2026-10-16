@@ -15,21 +15,35 @@ export interface CartItem {
   groupSlug?: string;
 }
 
-interface CartState {
+export interface CartState {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
 }
 
+const DEFAULT_MAX_QUANTITY = 99;
+
+const isAvailable = (item: CartItem) => item.inStock !== false;
+
+const clampQuantity = (item: CartItem, quantity: number) =>
+  Math.min(Math.max(1, quantity), item.maxQuantity ?? DEFAULT_MAX_QUANTITY);
+
+export const calculateCartTotals = (items: CartItem[]) => {
+  const available = items.filter(isAvailable);
+  return {
+    totalItems: available.reduce((sum, item) => sum + item.quantity, 0),
+    totalPrice: available.reduce((sum, item) => sum + item.price * item.quantity, 0),
+  };
+};
+
+const recalculateTotals = (state: CartState) => {
+  Object.assign(state, calculateCartTotals(state.items));
+};
+
 const initialState: CartState = {
   items: [],
   totalItems: 0,
   totalPrice: 0,
-};
-
-const recalculateTotals = (state: CartState) => {
-  state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
-  state.totalPrice = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 };
 
 const cartSlice = createSlice({
@@ -40,9 +54,9 @@ const cartSlice = createSlice({
       const existing = state.items.find(item => item.productId === action.payload.productId);
 
       if (existing) {
-        existing.quantity += action.payload.quantity;
+        existing.quantity = clampQuantity(existing, existing.quantity + action.payload.quantity);
       } else {
-        state.items.push(action.payload);
+        state.items.push({ ...action.payload, quantity: clampQuantity(action.payload, action.payload.quantity) });
       }
 
       recalculateTotals(state);
@@ -56,7 +70,7 @@ const cartSlice = createSlice({
     updateQuantity: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
       const item = state.items.find(item => item.productId === action.payload.productId);
       if (item) {
-        item.quantity = Math.max(1, action.payload.quantity);
+        item.quantity = clampQuantity(item, action.payload.quantity);
         recalculateTotals(state);
       }
     },

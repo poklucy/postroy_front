@@ -1,59 +1,55 @@
-import { RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 import { ROUTES } from '@/config/routes.config';
 import { HomePage } from '@/pages/HomePage';
 import { CatalogPage } from '@/pages/CatalogPage';
 import { CatalogLevelPage } from '@/pages/CatalogLevelPage/CatalogLevelPage';
 import { ProductDetailPage } from '@/pages/ProductDetailPage';
-import { CartPage } from '@/pages/CartPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
-import { ComparePage } from '@/pages/ComparePage';
-import { CheckoutPage } from '@/pages/CheckoutPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { ProfileOrdersPage } from '@/pages/ProfileOrdersPage';
-import { ViewedProductsPage } from '@/pages/ViewedProductsPage';
-import { PurchaseHistoryPage } from '@/pages/PurchaseHistoryPage';
 import { PrivateRoute } from './PrivateRoute';
-import { OrderSuccessPage } from '@/pages/OrderSuccessPage';
-import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { SearchPage } from '@/pages/SearchPage';
-import { AboutPage } from '@/pages/AboutPage';
 import { Layout } from '@/components/layout/Layout';
-import { DeliveryPage } from '@/pages/DeliveryPage';
-import { PersonPage } from '@/pages/PersonPage';
+import { ErrorPage, RootErrorPage } from '@/pages/ErrorPage';
+import { REDIRECTS } from './redirects';
 
 export const routes: RouteObject[] = [
   {
     path: '/',
     element: <Layout />,
+    errorElement: <RootErrorPage />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: ROUTES.CATALOG, element: <CatalogPage /> },
-      { path: ROUTES.CATEGORY, element: <CatalogLevelPage /> },
-      { path: ROUTES.SUBCATEGORY, element: <CatalogLevelPage /> },
-      { path: ROUTES.GROUP, element: <CatalogLevelPage /> },
-      { path: ROUTES.PRODUCT, element: <ProductDetailPage /> },
-      { path: ROUTES.CART, element: <CartPage /> },
-      { path: ROUTES.FAVORITES, element: <FavoritesPage /> },
-      { path: ROUTES.COMPARE, element: <ComparePage /> },
-      { path: ROUTES.CHECKOUT, element: <CheckoutPage /> },
       {
-        element: <PrivateRoute />,
+        errorElement: <ErrorPage />,
         children: [
-          { path: ROUTES.PROFILE, element: <ProfilePage /> },
-          { path: ROUTES.PROFILE_ORDERS, element: <ProfileOrdersPage /> },
-          { path: ROUTES.PROFILE_HISTORY, element: <PurchaseHistoryPage /> },
-          { path: ROUTES.PROFILE_VIEWED, element: <ViewedProductsPage /> },
+          { index: true, element: <HomePage /> },
+          { path: ROUTES.CATALOG, element: <CatalogPage /> },
+          { path: ROUTES.CATEGORY, element: <CatalogLevelPage /> },
+          { path: ROUTES.SUBCATEGORY, element: <CatalogLevelPage /> },
+          { path: ROUTES.GROUP, element: <CatalogLevelPage /> },
+          { path: ROUTES.PRODUCT, element: <ProductDetailPage /> },
+          { path: ROUTES.PRODUCT_SHORT, element: <ProductDetailPage /> },
+          { path: ROUTES.CART, lazy: () => import('@/pages/CartPage').then(m => ({ Component: m.CartPage })) },
+          { path: ROUTES.FAVORITES, lazy: () => import('@/pages/FavoritesPage').then(m => ({ Component: m.FavoritesPage })) },
+          { path: ROUTES.COMPARE, lazy: () => import('@/pages/ComparePage').then(m => ({ Component: m.ComparePage })) },
+          { path: ROUTES.CHECKOUT, lazy: () => import('@/pages/CheckoutPage').then(m => ({ Component: m.CheckoutPage })) },
+          {
+            element: <PrivateRoute />,
+            children: [
+              { path: ROUTES.PROFILE, lazy: () => import('@/pages/ProfilePage').then(m => ({ Component: m.ProfilePage })) },
+              { path: ROUTES.PROFILE_ORDERS, lazy: () => import('@/pages/ProfileOrdersPage').then(m => ({ Component: m.ProfileOrdersPage })) },
+              { path: ROUTES.PROFILE_HISTORY, lazy: () => import('@/pages/PurchaseHistoryPage').then(m => ({ Component: m.PurchaseHistoryPage })) },
+              { path: ROUTES.PROFILE_VIEWED, lazy: () => import('@/pages/ViewedProductsPage').then(m => ({ Component: m.ViewedProductsPage })) },
+            ],
+          },
+          { path: ROUTES.ORDER_SUCCESS, lazy: () => import('@/pages/OrderSuccessPage').then(m => ({ Component: m.OrderSuccessPage })) },
+          { path: ROUTES.LOGIN, lazy: () => import('@/pages/LoginPage').then(m => ({ Component: m.LoginPage })) },
+          { path: ROUTES.SEARCH, lazy: () => import('@/pages/SearchPage').then(m => ({ Component: m.SearchPage })) },
+          { path: ROUTES.AboutPage, lazy: () => import('@/pages/AboutPage').then(m => ({ Component: m.AboutPage })) },
+          { path: ROUTES.DeliveryPage, lazy: () => import('@/pages/DeliveryPage').then(m => ({ Component: m.DeliveryPage })) },
+          { path: ROUTES.PersonPage, lazy: () => import('@/pages/PersonPage').then(m => ({ Component: m.PersonPage })) },
+          ...REDIRECTS.map(({ from, to }) => ({ path: from, element: <Navigate to={to} replace /> })),
+          { path: ROUTES.NOT_FOUND, element: <NotFoundPage /> },
+          { path: '*', element: <NotFoundPage /> },
         ],
       },
-      { path: ROUTES.ORDER_SUCCESS, element: <OrderSuccessPage /> },
-      { path: ROUTES.LOGIN, element: <LoginPage /> },
-      { path: ROUTES.SEARCH, element: <SearchPage /> },
-      { path: ROUTES.AboutPage, element: <AboutPage /> },
-      { path: ROUTES.DeliveryPage, element: <DeliveryPage /> },
-      { path: ROUTES.PersonPage, element: <PersonPage /> },
-      { path: ROUTES.NOT_FOUND, element: <NotFoundPage /> },
-      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ];

@@ -1,3 +1,4 @@
+import { FEATURES } from '@/config/features.config';
 import { BONUS_ACCRUAL_RATE, COURIER_DELIVERY_PRICE, PromoCode } from '@/api/mockData/checkout';
 import { CartItem } from '@/store/slices/cart';
 import { DeliveryMethod } from '@/types/order.types';
@@ -26,9 +27,9 @@ export const calculateTotals = ({ items, deliveryMethod, promo, useBonus, bonusA
     const itemsTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const promoDiscount = promo ? roundMoney((itemsTotal * promo.percent) / 100) : 0;
     const afterPromo = itemsTotal - promoDiscount;
-    const bonusSpent = useBonus ? Math.min(bonusAvailable, Math.floor(afterPromo)) : 0;
+    const bonusSpent = FEATURES.loyalty && useBonus ? Math.min(bonusAvailable, Math.floor(afterPromo)) : 0;
     const deliveryPrice = deliveryMethod === 'courier' ? COURIER_DELIVERY_PRICE : 0;
-    const bonusEarned = Math.floor((afterPromo - bonusSpent) * BONUS_ACCRUAL_RATE);
+    const bonusEarned = !FEATURES.loyalty ? 0 : Math.floor((afterPromo - bonusSpent) * BONUS_ACCRUAL_RATE);
 
     return {
         itemsTotal,

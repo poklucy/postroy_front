@@ -6,6 +6,7 @@ import favoritesReducer from './slices/favorites';
 import compareReducer from './slices/compare';
 import checkoutReducer from './slices/checkout';
 import authReducer from './slices/auth';
+import notificationsReducer from './slices/notifications';
 
 export const rootReducer = combineReducers({
   categories: categoriesReducer,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   compare: compareReducer,
   checkout: checkoutReducer,
   auth: authReducer,
+  notifications: notificationsReducer,
 });

@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchProductBySlug } from '@/store/slices/products';
+import { useAppSelector } from '@/store/hooks';
 import { selectCurrentProduct } from '@/store/slices/products/products.selectors';
 import { useAllCategories } from '@/hooks/useCategories';
 import { CategoryWithHierarchy } from '@/types/category.types';
@@ -22,13 +21,12 @@ interface BreadcrumbItem {
 
 export const Breadcrumbs: React.FC = () => {
   const location = useLocation();
-  const dispatch = useAppDispatch();
   const pathnames = useMemo(
       () => location.pathname.split('/').filter(x => x),
       [location.pathname]
   );
 
-  const product = useAppSelector(selectCurrentProduct);
+  const currentProduct = useAppSelector(selectCurrentProduct);
   const { categories } = useAllCategories();
 
   const slugMap = useMemo(() => {
@@ -50,12 +48,7 @@ export const Breadcrumbs: React.FC = () => {
       pathnames.length === 4;
 
   const productSlug = isProductPage ? pathnames[pathnames.length - 1] : undefined;
-
-  useEffect(() => {
-    if (isProductPage && productSlug && (!product || product.slug !== productSlug)) {
-      dispatch(fetchProductBySlug(productSlug));
-    }
-  }, [isProductPage, productSlug, product, dispatch]);
+  const product = currentProduct?.slug === productSlug ? currentProduct : null;
 
   const breadcrumbs = useMemo<BreadcrumbItem[]>(() => {
     const getLabel = (slug: string) => slugMap[slug] || slug;
@@ -139,7 +132,7 @@ export const Breadcrumbs: React.FC = () => {
       });
 
       items.push({
-        label: product?.name || productSlug || '',
+        label: (product?.slug === productSlug && product?.name) || productSlug || '',
         path: location.pathname,
         isLast: true,
       });

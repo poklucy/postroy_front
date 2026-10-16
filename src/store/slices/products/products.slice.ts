@@ -1,143 +1,146 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Product, ProductFilters } from '@/types/product.types';
+import { IDLE_REQUEST, RequestError, RequestState } from '@/types/request.types';
 import { productsApi } from '@/api/products.api';
+import { createApiThunk, getRejectedError } from '@/store/createApiThunk';
+
+interface ProductRequest extends RequestState {
+    slug: string | null;
+}
+
+interface SearchRequest extends RequestState {
+    query: string;
+}
 
 interface ProductsState {
     byGroup: Record<string, Product[]>;
     byCategory: Record<string, Product[]>;
+    listRequests: Record<string, RequestState>;
     currentProduct: Product | null;
+    productRequest: ProductRequest;
     relatedProducts: Product[];
-    isLoading: boolean;
-    error: string | null;
+    relatedRequest: RequestState;
     searchResults: Product[];
+    searchRequest: SearchRequest;
 }
 
 const initialState: ProductsState = {
     byGroup: {},
     byCategory: {},
+    listRequests: {},
     currentProduct: null,
+    productRequest: { ...IDLE_REQUEST, slug: null },
     relatedProducts: [],
-    isLoading: false,
-    error: null,
+    relatedRequest: IDLE_REQUEST,
     searchResults: [],
+    searchRequest: { ...IDLE_REQUEST, query: '' },
 };
 
-export const fetchProductsByGroup = createAsyncThunk(
+export const groupListKey = (groupId: string) => `group:${groupId}`;
+export const categoryListKey = (categoryId: string) => `category:${categoryId}`;
+
+export const fetchProductsByGroup = createApiThunk(
     'products/fetchByGroup',
-    async ({ groupId, filters }: { groupId: string; filters?: ProductFilters }) => {
-        const products = await productsApi.getByGroup(groupId, filters);
-        return { groupId, products };
-    }
+    async ({ groupId, filters }: { groupId: string; filters?: ProductFilters }) => ({
+        groupId,
+        products: await productsApi.getByGroup(groupId, filters),
+    })
 );
 
-export const fetchProductsByCategory = createAsyncThunk(
+export const fetchProductsByCategory = createApiThunk(
     'products/fetchByCategory',
-    async ({ categoryId, filters }: { categoryId: string; filters?: ProductFilters }) => {
-        const products = await productsApi.getByCategory(categoryId, filters);
-        return { categoryId, products };
-    }
+    async ({ categoryId, filters }: { categoryId: string; filters?: ProductFilters }) => ({
+        categoryId,
+        products: await productsApi.getByCategory(categoryId, filters),
+    })
 );
 
-export const fetchProductBySlug = createAsyncThunk(
+export const fetchProductBySlug = createApiThunk(
     'products/fetchBySlug',
-    async (slug: string) => {
-        const product = await productsApi.getBySlug(slug);
-        return product;
-    }
+    (slug: string) => productsApi.getBySlug(slug)
 );
 
-export const fetchRelatedProducts = createAsyncThunk(
+export const fetchRelatedProducts = createApiThunk(
     'products/fetchRelated',
-    async ({ productId, limit }: { productId: string; limit?: number }) => {
-        const products = await productsApi.getRelated(productId, limit);
-        return products;
-    }
+    ({ productId, limit }: { productId: string; limit?: number }) => productsApi.getRelated(productId, limit)
 );
 
-export const searchProducts = createAsyncThunk(
+export const searchProducts = createApiThunk(
     'products/search',
-    async (query: string) => {
-        const results = await productsApi.search(query);
-        return results;
-    }
+    (query: string) => productsApi.search(query)
 );
+
+const loading = (): RequestState => ({ status: 'loading', error: null });
+const succeeded = (): RequestState => ({ status: 'succeeded', error: null });
+const failed = (error: RequestError): RequestState => ({ status: 'failed', error });
 
 const productsSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {
-        clearCurrentProduct: (state) => {
-            state.currentProduct = null;
-            state.relatedProducts = [];
-        },
-        clearSearchResults: (state) => {
-            state.searchResults = [];
-        },
-        clearCategoryProducts: (state) => {
-            state.byCategory = {};
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProductsByGroup.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+            .addCase(fetchProductsByGroup.pending, (state, action) => {
+                state.listRequests[groupListKey(action.meta.arg.groupId)] = loading();
             })
             .addCase(fetchProductsByGroup.fulfilled, (state, action) => {
-                state.isLoading = false;
                 const { groupId, products } = action.payload;
                 state.byGroup[groupId] = products;
+                state.listRequests[groupListKey(groupId)] = succeeded();
             })
             .addCase(fetchProductsByGroup.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message || 'Ошибка загрузки товаров';
+                state.listRequests[groupListKey(action.meta.arg.groupId)] = failed(getRejectedError(action));
             })
 
-            .addCase(fetchProductsByCategory.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+            .addCase(fetchProductsByCategory.pending, (state, action) => {
+                state.listRequests[categoryListKey(action.meta.arg.categoryId)] = loading();
             })
             .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-                state.isLoading = false;
                 const { categoryId, products } = action.payload;
                 state.byCategory[categoryId] = products;
+                state.listRequests[categoryListKey(categoryId)] = succeeded();
             })
             .addCase(fetchProductsByCategory.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message || 'Ошибка загрузки товаров категории';
+                state.listRequests[categoryListKey(action.meta.arg.categoryId)] = failed(getRejectedError(action));
             })
 
-            .addCase(fetchProductBySlug.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+            .addCase(fetchProductBySlug.pending, (state, action) => {
+                state.productRequest = { ...loading(), slug: action.meta.arg };
             })
             .addCase(fetchProductBySlug.fulfilled, (state, action) => {
-                state.isLoading = false;
+                if (state.productRequest.slug !== action.meta.arg) return;
                 state.currentProduct = action.payload;
+                state.productRequest = { ...succeeded(), slug: action.meta.arg };
             })
             .addCase(fetchProductBySlug.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message || 'Ошибка загрузки товара';
+                if (state.productRequest.slug !== action.meta.arg) return;
+                state.productRequest = { ...failed(getRejectedError(action)), slug: action.meta.arg };
             })
 
+            .addCase(fetchRelatedProducts.pending, (state) => {
+                state.relatedRequest = loading();
+            })
             .addCase(fetchRelatedProducts.fulfilled, (state, action) => {
                 state.relatedProducts = action.payload;
+                state.relatedRequest = succeeded();
+            })
+            .addCase(fetchRelatedProducts.rejected, (state, action) => {
+                state.relatedRequest = failed(getRejectedError(action));
             })
 
-            .addCase(searchProducts.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+            .addCase(searchProducts.pending, (state, action) => {
+                state.searchRequest = { ...loading(), query: action.meta.arg };
             })
             .addCase(searchProducts.fulfilled, (state, action) => {
-                state.isLoading = false;
+                if (state.searchRequest.query !== action.meta.arg) return;
                 state.searchResults = action.payload;
+                state.searchRequest = { ...succeeded(), query: action.meta.arg };
             })
             .addCase(searchProducts.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message || 'Ошибка поиска';
+                if (state.searchRequest.query !== action.meta.arg) return;
+                state.searchRequest = { ...failed(getRejectedError(action)), query: action.meta.arg };
             });
     },
 });
 
-export const { clearCurrentProduct, clearSearchResults, clearCategoryProducts } = productsSlice.actions;
 export default productsSlice.reducer;

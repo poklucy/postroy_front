@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '@/config/routes.config';
 import { useAppSelector } from '@/store/hooks';
 import { useAllCategories } from '@/hooks/useCategories';
 import {
@@ -9,6 +11,7 @@ import { ProductSlider } from '@/components/product/ProductSlider';
 import { CategorySlider } from '@/components/category/CategorySlider';
 import { SectionBlock } from '@/components/common/SectionBlock';
 import { ProductCard } from '@/components/product/ProductCard';
+import { FEATURES } from '@/config/features.config';
 import styles from './HomePage.module.css';
 import back from '../../assets/images/about_back.png';
 import { AdvantagesGrid } from '@/components/common/AdvantagesGrid';
@@ -26,11 +29,13 @@ export const HomePage: React.FC = () => {
             <SectionBlock
                 accent="Каталог"
                 title="Категории товаров"
+                mobileTitle="Каталог"
+                compactOnMobile
                 description="Товары, которые выбирают покупатели каждый день."
                 linkText="Смотреть весь ассортимент"
                 linkHref="/catalog"
             >
-                {recommendedProducts.length > 0 && (
+                {categories.length > 0 && (
                     <CategorySlider categories={categories} slidesPerView={6} />
                 )}
             </SectionBlock>
@@ -38,6 +43,8 @@ export const HomePage: React.FC = () => {
             <SectionBlock
                 accent="Хиты"
                 title="Популярное"
+                mobileTitle="Хиты"
+                compactOnMobile
                 description="Товары, которые выбирают покупатели каждый день."
                 linkText="Перейти в раздел"
                 linkHref="/catalog"
@@ -50,30 +57,34 @@ export const HomePage: React.FC = () => {
             <SectionBlock
                 accent="Почему мы"
                 title="Что нас отличает"
+                mobileTitle="Почему мы"
+                compactOnMobile
                 description="Работаем честно и прямо. Каждый товар проверен перед отправкой."
                 linkText="Подробнее о компании"
+                linkHref="/about"
             >
-                <AdvantagesGrid items={STORE_ADVANTAGES} />
+                <AdvantagesGrid items={STORE_ADVANTAGES} mobileScroll />
             </SectionBlock>
 
 
             <SectionBlock
                 accent="Быстрый поиск"
                 title="Рекомендуем для вас"
+                compactOnMobile
                 description="Выберите тип, бренд или наличие."
                 linkText="Перейти в каталог"
                 linkHref="/catalog"
                 className={styles.sectionRecommend}
                 headerClassName={styles.sectionHeaderRecommend}
                 footer={
-                    <a href="/catalog" className={styles.linkCatalog}>
+                    <Link to={ROUTES.CATALOG} className={styles.linkCatalog}>
                         Смотреть все
                         <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
                             <path
                                 d="M0.671594 8.73598L-0.000406206 8.06398L6.78359 1.27998L0.879594 0.879975L1.75959 -2.47955e-05L8.35159 0.367975L8.73559 6.95998L7.85559 7.83998L7.45559 1.95198L0.671594 8.73598Z"
                                 fill="black"/>
                         </svg>
-                    </a>
+                    </Link>
                 }
             >
                 <div className={styles.backgroundRecommend}/>
@@ -101,11 +112,11 @@ export const HomePage: React.FC = () => {
                             и&nbsp;частных
                             клиентов всегда широкий ассортимент: материалы и&nbsp;инструменты для ремонта, строительства
                             и
-                            обустройства. Есть специальные условия для оптовиков и&nbsp;бонусная программа лояльности.
+                            обустройства. Есть специальные условия для оптовиков{FEATURES.loyalty ? <> и&nbsp;бонусная программа лояльности</> : null}.
                             За
                             подробностями обращайтесь к&nbsp;нашим менеджерам.</p>
                     </div>
-                    <a href="">Подробнее о бонусах</a>
+                    {FEATURES.loyalty && <Link to={ROUTES.PROFILE}>Подробнее о бонусах</Link>}
                 </div>
 
                 <div className={`${styles.textContainer} ${styles.backTextContainer}`}>
@@ -149,7 +160,7 @@ export const HomePage: React.FC = () => {
                             </li>
                         </ul>
                     </div>
-                    <a href="">Подробнее о бонусах</a>
+                    {FEATURES.loyalty && <Link to={ROUTES.PersonPage}>Подробнее о бонусах</Link>}
                 </div>
             </section>
         </div>

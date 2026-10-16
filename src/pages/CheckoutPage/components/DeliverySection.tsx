@@ -5,6 +5,7 @@ import { Input, TextArea } from '@/components/common/Input';
 import { COURIER_COMMENT_TAGS, DELIVERY_SERVICES, PICKUP_POINTS } from '@/api/mockData/checkout';
 import { Checkbox } from '@/components/common/Checkbox';
 import { RadioButton } from '@/components/common/RadioButton';
+import { AVAILABLE_DELIVERY_METHODS } from '@/config/checkout.config';
 import { Address } from '@/types/user.types';
 import { DeliveryMethod } from '@/types/order.types';
 import styles from '../CheckoutPage.module.css';
@@ -73,20 +74,16 @@ export const DeliverySection: React.FC<DeliverySectionProps> = ({
             <div className={styles.fieldGroup}>
                 <span className={styles.fieldLabel}>Тип доставки</span>
                 <div className={styles.radioRow}>
-                    <RadioButton
-                        name="deliveryMethod"
-                        value="pickup"
-                        checked={method === 'pickup'}
-                        onChange={() => onMethodChange('pickup')}
-                        label="Самовывоз"
-                    />
-                    <RadioButton
-                        name="deliveryMethod"
-                        value="courier"
-                        checked={method === 'courier'}
-                        onChange={() => onMethodChange('courier')}
-                        label="Курьер"
-                    />
+                    {AVAILABLE_DELIVERY_METHODS.map(option => (
+                        <RadioButton
+                            key={option.value}
+                            name="deliveryMethod"
+                            value={option.value}
+                            checked={method === option.value}
+                            onChange={() => onMethodChange(option.value)}
+                            label={option.label}
+                        />
+                    ))}
                 </div>
             </div>
 

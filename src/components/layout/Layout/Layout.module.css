@@ -3,3 +3,9 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
+@media (max-width: 1024px) {
+  .main {
+    padding-top: 14px;
+  }
+}

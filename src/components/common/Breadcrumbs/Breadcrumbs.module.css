@@ -33,3 +33,10 @@
   color: var(--grey);
   margin: 0 4px;
 }
+
+@media (max-width: 840px) {
+  .list {
+    font-size: 12px;
+    row-gap: 2px;
+  }
+}

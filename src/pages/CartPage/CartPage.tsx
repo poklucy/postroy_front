@@ -13,6 +13,8 @@ import { CartItemRow } from '@/components/cart/CartItemRow';
 import { CartSummary } from '@/components/cart/CartSummary';
 import { useSelection } from '@/hooks/useSelection';
 import { TrashIcon } from '@/components/common/icons';
+import { BONUS_ACCRUAL_RATE } from '@/api/mockData/checkout';
+import { FEATURES } from '@/config/features.config';
 import styles from './CartPage.module.css';
 import { EmptyState } from '@/components/common/EmptyState';
 
@@ -73,7 +75,7 @@ export const CartPage: React.FC = () => {
                                 fill="#A4AFB7"/>
                         </svg>
 
-                        Поделиться корзиной
+                        <span>Поделиться<span className={styles.desktopOnly}> корзиной</span></span>
                       </button>
                       <button className={styles.toolbarBtn} type="button" onClick={handleClear}>
                         <TrashIcon />
@@ -99,7 +101,7 @@ export const CartPage: React.FC = () => {
                           positionsCount={items.length}
                           totalPrice={totalPrice}
                           weight={40}
-                          bonusPoints={156}
+                          bonusPoints={FEATURES.loyalty ? Math.floor(totalPrice * BONUS_ACCRUAL_RATE) : undefined}
                           onCheckout={() => navigate('/checkout')}
                       />
                     </div>

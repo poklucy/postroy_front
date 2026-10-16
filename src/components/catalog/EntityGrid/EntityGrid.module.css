@@ -32,3 +32,42 @@
     object-fit: contain;
 }
 
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 840px) {
+    .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .card {
+        justify-content: flex-start;
+        gap: 6px;
+        min-height: 0;
+        max-height: none;
+        padding: 8px 6px 10px;
+        border-color: var(--light-grey);
+        border-radius: 4px;
+        font-size: 11px;
+        line-height: 1.25;
+        hyphens: auto;
+        overflow-wrap: anywhere;
+    }
+
+    .card p {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .image {
+        width: 100%;
+        height: 64px;
+        max-height: none;
+    }
+}

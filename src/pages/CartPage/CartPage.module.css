@@ -78,10 +78,32 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
+  .cartPage {
+    gap: 30px;
+    padding-bottom: 40px;
+  }
 
   .toolbar {
-    flex-wrap: wrap;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .toolbarBtn {
+    font-size: 12px;
+  }
+
+  .toolbarBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  .cartLayout {
+    gap: 24px;
   }
 }

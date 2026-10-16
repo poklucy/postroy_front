@@ -1,8 +1,11 @@
-import { createSlice, createAsyncThunk, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { ApiError } from '@/api/apiError';
+import { mockRequest } from '@/api/mock';
+import { STATUS_MESSAGES, getInlineErrorMessage } from '@/config/statusMessages';
+import { createApiThunk, getRejectedError } from '@/store/createApiThunk';
 import { AuthState } from '@/types/auth.types';
 import { Order } from '@/types/order.types';
 import { UserProfile } from '@/types/user.types';
-import { delay } from '@/utils/helpers';
 import { normalizePhone } from '@/utils/phone';
 import { userStorage } from '@/utils/userStorage';
 
@@ -20,30 +23,25 @@ const loadInitialState = (): AuthState => {
   };
 };
 
-export const sendSmsCode = createAsyncThunk(
+export const sendSmsCode = createApiThunk(
   'auth/sendSms',
-  async (rawPhone: string) => {
-    await delay(1000);
-
+  (rawPhone: string) => mockRequest('auth', 1000, () => {
     const phone = normalizePhone(rawPhone);
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     userStorage.saveSmsCode(phone, code);
-    console.log(`📱 Ваш SMS-код: ${code}`);
 
     return { phone, code };
-  }
+  })
 );
 
-export const verifySmsCode = createAsyncThunk(
+export const verifySmsCode = createApiThunk(
   'auth/verifySms',
-  async ({ phone: rawPhone, code }: { phone: string; code: string }) => {
-    await delay(800);
-
+  ({ phone: rawPhone, code }: { phone: string; code: string }) => mockRequest('auth', 800, () => {
     const phone = normalizePhone(rawPhone);
     const saved = userStorage.getSmsCode();
 
     if (!saved || saved.phone !== phone || saved.code !== code) {
-      throw new Error('Неверный код подтверждения');
+      throw new ApiError('validation', STATUS_MESSAGES.auth.invalidCode, 422);
     }
 
     userStorage.clearSmsCode();
@@ -51,7 +49,7 @@ export const verifySmsCode = createAsyncThunk(
     userStorage.saveSession({ phone, token: `fake_token_${Date.now()}` });
 
     return user;
-  }
+  })
 );
 
 const authSlice = createSlice({
@@ -105,7 +103,7 @@ const authSlice = createSlice({
       })
       .addCase(sendSmsCode.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Ошибка отправки SMS';
+        state.error = getInlineErrorMessage(getRejectedError(action), STATUS_MESSAGES.auth.sendCodeError);
       })
 
       .addCase(verifySmsCode.pending, (state) => {
@@ -121,7 +119,10 @@ const authSlice = createSlice({
       })
       .addCase(verifySmsCode.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Неверный код подтверждения';
+        const error = getRejectedError(action);
+        state.error = error.kind === 'validation'
+          ? STATUS_MESSAGES.auth.invalidCode
+          : getInlineErrorMessage(error, STATUS_MESSAGES.auth.verifyError);
       });
   },
 });

@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { formatPhone, formatPhoneInput, isPhoneComplete, PHONE_PLACEHOLDER } from '@/utils/phone';
+import { STATUS_MESSAGES } from '@/config/statusMessages';
 import styles from './SmsAuthForm.module.css';
 
 interface SmsAuthFormProps {
@@ -71,7 +72,7 @@ export const SmsAuthForm: React.FC<SmsAuthFormProps> = ({ titleTag: Title = 'h2'
           : `Код отправлен на номер ${formatPhone(phone)}`}
       </p>
 
-      {error && <div className={styles.error}>{error}</div>}
+      {error && <div className={styles.error} role="alert">{error}</div>}
 
       <form className={styles.fields} onSubmit={step === 'phone' ? handleSendSms : handleVerifyCode}>
         {step === 'phone' ? (
@@ -87,7 +88,7 @@ export const SmsAuthForm: React.FC<SmsAuthFormProps> = ({ titleTag: Title = 'h2'
               autoFocus
             />
             <Button type="submit" fullWidth disabled={isLoading || !isPhoneComplete(phone)}>
-              {isLoading ? 'Отправка...' : 'Получить код'}
+              {isLoading ? STATUS_MESSAGES.auth.sendingCode : 'Получить код'}
             </Button>
           </>
         ) : (
@@ -104,7 +105,7 @@ export const SmsAuthForm: React.FC<SmsAuthFormProps> = ({ titleTag: Title = 'h2'
               autoFocus
             />
             <Button type="submit" fullWidth disabled={isLoading || code.length !== 6}>
-              {isLoading ? 'Проверка...' : 'Войти'}
+              {isLoading ? STATUS_MESSAGES.auth.verifying : 'Войти'}
             </Button>
           </>
         )}

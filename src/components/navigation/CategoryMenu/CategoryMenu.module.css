@@ -28,7 +28,10 @@
 
 .menuContainer {
   position: fixed;
-  top: 172px;
+  top: var(--header-height, 172px);
+  max-height: calc(100vh - var(--header-height, 172px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -36,7 +39,6 @@
   background: white;
   z-index: 10;
   animation: slideDown 0.25s ease;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   gap: var(--pd3);
@@ -62,6 +64,7 @@
 .columnLeft {
   flex: 0 0 340px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .columnLeft::-webkit-scrollbar {
@@ -115,7 +118,10 @@
 
 .columnRight {
   flex: 1;
+  align-self: flex-start;
+  max-height: 100%;
   overflow-y: auto;
+  overscroll-behavior: contain;
   background: white;
   padding: 10px;
   border: 1px solid var(--light-grey);
@@ -147,18 +153,15 @@
 }
 
 .groupList {
-  list-style-type: disc;
   padding: 0;
   margin: 0;
 }
 
 .groupItem {
-  margin-left: 20px;
 }
 
 .groupLink {
-  display: inline-block;
-  text-decoration: underline;
+  display: inline;
 }
 
 .groupLink:hover {
@@ -174,10 +177,9 @@
   font-size: 14px;
 }
 
-.loading {
-  padding: 8px 16px;
-  color: #7a7a7a;
-  font-size: 14px;
+.status {
+  flex: 1;
+  margin: 20px 0;
 }
 
 @media (max-width: 1024px) {

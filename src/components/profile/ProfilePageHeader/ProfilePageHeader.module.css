@@ -1,0 +1,15 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (max-width: 840px) {
+    .header {
+        gap: 12px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+}

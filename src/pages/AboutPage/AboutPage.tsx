@@ -1,9 +1,10 @@
 import React from 'react';
+import { FEATURES } from '@/config/features.config';
 import styles from './AboutPage.module.css';
 import { SectionBlock } from '@/components/common/SectionBlock';
 import Shop from '/images/shop/shop.jpg';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { buildCategoryUrl } from '@/config';
+import { ROUTES, buildCategoryUrl } from '@/config';
 import { Link } from 'react-router-dom';
 import { useAllCategories } from '@/hooks/useCategories';
 import back from '@/assets/images/about_back.png';
@@ -41,10 +42,9 @@ export const AboutPage: React.FC = () => {
                                     С нами выгодно:
                                 </p>
                                 <p>
-                                    Экономия до 15% при оптовой закупке от 50 000 ₽.<br></br>Накопительная карта: 1 балл
-                                    = 1
-                                    ₽ на следующие
-                                    покупки.<br></br>Рассрочка 0% на всё от 3 000 ₽.
+                                    Экономия до 15% при оптовой закупке от 50 000 ₽.<br></br>
+                                    {FEATURES.loyalty && <>Накопительная карта: 1 балл = 1 ₽ на следующие покупки.<br></br></>}
+                                    Рассрочка 0% на всё от 3 000 ₽.
                                 </p>
                             </div>
                         </div>
@@ -66,13 +66,13 @@ export const AboutPage: React.FC = () => {
                                 <h2>
                                     18 000+
                                 </h2>
-                                <p>наименований товаров в наличии<br></br> на складах</p>
+                                <p>наименований товаров в наличии <br></br>на складах</p>
                             </div>
                             <div className={styles.advantagesItem}>
                                 <h2>
                                     3 500
                                 </h2>
-                                <p>постоянных клиентов<br></br>(частных и корпоративных)</p>
+                                <p>постоянных клиентов <br></br>(частных и корпоративных)</p>
                             </div>
                         </div>
                     </div>
@@ -81,9 +81,10 @@ export const AboutPage: React.FC = () => {
                 <SectionBlock
                     accent="Почему мы"
                     title="Что нас отличает"
+                    compactOnMobile
                     description="Работаем честно и прямо. Каждый товар проверен перед отправкой."
                 >
-                    <AdvantagesGrid items={STORE_ADVANTAGES} />
+                    <AdvantagesGrid items={STORE_ADVANTAGES} mobileScroll />
                 </SectionBlock>
 
 
@@ -139,6 +140,7 @@ export const AboutPage: React.FC = () => {
                 <SectionBlock
                     accent="Каталог"
                     title="Более 15 000 товаров в наличии"
+                    compactOnMobile
                     description="Товары, которые выбирают покупатели каждый день."
                     linkText="Смотреть весь ассортимент"
                     linkHref="/catalog"
@@ -221,7 +223,7 @@ export const AboutPage: React.FC = () => {
                                 </li>
                             </ul>
                         </div>
-                        <a href="">Подробнее о бонусах</a>
+                        {FEATURES.loyalty && <Link to={ROUTES.PersonPage}>Подробнее о бонусах</Link>}
                     </div>
                 </section>
             </div>

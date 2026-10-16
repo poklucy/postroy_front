@@ -101,28 +101,59 @@
     fill: var(--brand);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
     .row {
-        grid-template-columns: 24px 70px 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 12px;
+        grid-template-columns: 18px 80px minmax(0, 1fr);
+        grid-template-areas:
+            "check image info"
+            "check image prices"
+            "check image actions";
+        gap: 6px 12px;
+        padding: 16px 0;
+        border-bottom-color: var(--light-grey);
+    }
+
+    .row:first-child {
+        border-top-color: var(--light-grey);
+    }
+
+    .checkbox {
+        grid-area: check;
+        justify-content: flex-start;
     }
 
     .image {
-        width: 70px;
-        height: 85px;
+        grid-area: image;
+        width: 80px;
+        height: 80px;
+        margin: 0;
+    }
+
+    .info {
+        grid-area: info;
+        gap: 2px;
+    }
+
+    .name {
+        font-size: 13px;
+        line-height: 1.3;
     }
 
     .prices {
-        grid-column: 2 / -1;
-        align-items: flex-start;
-        padding-top: 0;
+        grid-area: prices;
+    }
+
+    .totalPrice {
+        font-size: 18px;
     }
 
     .actions {
-        grid-column: 2 / -1;
-        padding-top: 0;
+        grid-area: actions;
         justify-content: space-between;
-        width: 100%;
+        gap: 12px;
+    }
+
+    .actions > :first-child {
+        flex: 0 1 130px;
     }
 }
